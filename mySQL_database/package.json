@@ -7,10 +7,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TateJohnston/LASS_labour_assistant.git"
-  },
   "author": "Tate Johnston",
   "license": "ISC",
   "bugs": {
