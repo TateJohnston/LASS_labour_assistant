@@ -2,15 +2,19 @@ const { DataTypes, Model } = require("sequelize");
 let dbConnect = require("../dbConnect");
 const sequelizeInstance = dbConnect.Sequelize;
 
-class Foreman extends Model {}
+class Managers extends Model {}
 
-Foreman.init(
+Managers.init(
   {
+    manager_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     employee_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true,
-      primaryKey: true,
       references: {
         model: "employees",
         key: "employee_id",
@@ -24,24 +28,26 @@ Foreman.init(
         key: "role_id",
       },
     },
-    shift_count: {
-      type: DataTypes.INTEGER,
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    last_voc: {
-      type: DataTypes.DATE,
+    number: {
+      type: DataTypes.STRING,
       allowNull: false,
-    },
-    ticket_expiry: {
-      type: DataTypes.DATE,
-      allowNull: false,
+      unique: true,
     },
   },
   {
     sequelize: sequelizeInstance,
-    modelName: "foreman",
+    modelName: "managers",
     timestamps: true,
     freezeTableName: true,
   }
 );
-module.exports = Foreman;
+module.exports = Managers;

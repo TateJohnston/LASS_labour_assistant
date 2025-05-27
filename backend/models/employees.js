@@ -40,17 +40,13 @@ Employees.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    position: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    salary: {
+    role_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-    },
-    is_admin: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
+      references: {
+        model: "roles",
+        key: "role_id",
+      },
     },
     emergency_name: {
       type: DataTypes.STRING,

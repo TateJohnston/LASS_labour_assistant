@@ -10,6 +10,8 @@ const TruckOperators = require("./truck_operators");
 const Shifts = require("./shifts");
 const Teams = require("./teams");
 const Rosters = require("./rosters");
+const Roles = require("./roles");
+const Managers = require("./managers");
 
 const init = async () => {
   await Employees.sync();
@@ -24,6 +26,8 @@ const init = async () => {
   await Shifts.sync();
   await Teams.sync();
   await Rosters.sync();
+  await Roles.sync();
+  await Managers.sync();
 };
 
 init();
@@ -41,4 +45,6 @@ module.exports = {
   Shifts,
   Teams,
   Rosters,
+  Roles,
+  Managers,
 };

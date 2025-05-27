@@ -6,25 +6,50 @@ class Payslips extends Model {}
 
 Payslips.init(
   {
-    employee_id: {
+    payslip_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
+      autoIncrement: true,
+    },
+    employee_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
         model: "employees",
         key: "employee_id",
       },
     },
     salary: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     overtime: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     bonus: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
+    upgrades: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
+    },
+    gross: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
+    tax: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
+    net: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
+    super: {
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     pay_day: {

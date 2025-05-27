@@ -31,6 +31,14 @@ Rosters.init(
         key: "team_id",
       },
     },
+    role_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: "roles",
+        key: "role_id",
+      },
+    },
     available: {
       type: DataTypes.BOOLEAN,
       allowNull: false,

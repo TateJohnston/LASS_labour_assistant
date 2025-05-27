@@ -6,19 +6,22 @@ class CraneOperators extends Model {}
 
 CraneOperators.init(
   {
-    co_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true,
-    },
     employee_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       unique: true,
+      primaryKey: true,
       references: {
         model: "employees",
         key: "employee_id",
+      },
+    },
+    role_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "roles",
+        key: "role_id",
       },
     },
     shift_count: {

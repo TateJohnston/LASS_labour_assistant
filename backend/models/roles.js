@@ -2,11 +2,11 @@ const { DataTypes, Model } = require("sequelize");
 let dbConnect = require("../dbConnect");
 const sequelizeInstance = dbConnect.Sequelize;
 
-class Shifts extends Model {}
+class Roles extends Model {}
 
-Shifts.init(
+Roles.init(
   {
-    shift_id: {
+    role_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
@@ -16,20 +16,20 @@ Shifts.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    start_time: {
-      type: DataTypes.TIME,
+    grade: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
-    end_time: {
-      type: DataTypes.TIME,
+    salary: {
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
   },
   {
     sequelize: sequelizeInstance,
-    modelName: "shifts",
-    timestamps: false,
+    modelName: "roles",
+    timestamps: true,
     freezeTableName: true,
   }
 );
-module.exports = Shifts;
+module.exports = Roles;
