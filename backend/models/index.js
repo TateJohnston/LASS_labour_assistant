@@ -12,6 +12,7 @@ const Teams = require("./teams");
 const Rosters = require("./rosters");
 const Roles = require("./roles");
 const Managers = require("./managers");
+const LeaveRequests = require("./leave_requests");
 
 const init = async () => {
   await Employees.sync();
@@ -28,6 +29,7 @@ const init = async () => {
   await Rosters.sync();
   await Roles.sync();
   await Managers.sync();
+  await LeaveRequests.sync();
 };
 
 init();
@@ -47,4 +49,5 @@ module.exports = {
   Rosters,
   Roles,
   Managers,
+  LeaveRequests,
 };

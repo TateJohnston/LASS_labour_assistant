@@ -4,10 +4,24 @@ let dbConnect = require("./dbConnect");
 require("./models");
 const app = express();
 
+const employeeRoutes = require("./routes/employeeRoutes");
+const licenseRoutes = require("./routes/licenseRoutes");
+const leaveRoutes = require("./routes/leaveRoutes");
+const skillRoutes = require("./routes/skillRoutes");
+const allocationRoutes = require("./routes/allocationRoutes");
+const rosterRoutes = require("./routes/rosterRoutes");
+
 app.use(express.json());
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to my mySQL application." });
 });
+
+app.use("/lass/employees", employeeRoutes);
+app.use("/lass/licenses", licenseRoutes);
+app.use("/lass/leave", leaveRoutes);
+app.use("/lass/skills", skillRoutes);
+app.use("/lass/allocations", allocationRoutes);
+app.use("/lass/rosters", rosterRoutes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
