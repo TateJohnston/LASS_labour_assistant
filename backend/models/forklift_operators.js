@@ -24,10 +24,7 @@ ForkliftOperators.init(
         key: "role_id",
       },
     },
-    shift_count: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+
     last_voc: {
       type: DataTypes.DATE,
       allowNull: false,
