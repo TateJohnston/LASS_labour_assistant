@@ -51,7 +51,6 @@ Rosters.init(
     date: {
       type: DataTypes.DATE,
       allowNull: false,
-      unique: true,
     },
   },
   {

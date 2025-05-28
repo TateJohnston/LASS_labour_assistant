@@ -2,47 +2,51 @@ const { DataTypes, Model } = require("sequelize");
 let dbConnect = require("../dbConnect");
 const sequelizeInstance = dbConnect.Sequelize;
 
-class Foreman extends Model {}
+class LeaveRequests extends Model {}
 
-Foreman.init(
+LeaveRequests.init(
   {
+    leave_request_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+      unique: true,
+    },
     employee_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true,
-      primaryKey: true,
       references: {
         model: "employees",
         key: "employee_id",
       },
     },
-    role_id: {
+    roster_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "roles",
-        key: "role_id",
+        model: "rosters",
+        key: "roster_id",
       },
     },
-
-    last_voc: {
-      type: DataTypes.DATE,
+    leave_type: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    ticket_expiry: {
-      type: DataTypes.DATE,
+    status: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
-    has_skill: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
+    comment: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
   },
   {
     sequelize: sequelizeInstance,
-    modelName: "foreman",
+    modelName: "leave_requests",
     timestamps: true,
     freezeTableName: true,
   }
 );
-module.exports = Foreman;
+module.exports = LeaveRequests;

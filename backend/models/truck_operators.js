@@ -32,6 +32,10 @@ TruckOperators.init(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    has_skill: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
   },
   {
     sequelize: sequelizeInstance,
