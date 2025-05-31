@@ -1,4 +1,4 @@
-const Logo = ({ width = "100%", maxWidth = "960px" }) => {
+const Logo = ({ width = "100%", maxwidth = "960px" }) => {
   return (
     <div
       style={{
@@ -12,8 +12,8 @@ const Logo = ({ width = "100%", maxWidth = "960px" }) => {
     >
       <svg
         width={width}
-        maxWidth={maxWidth}
-        height="auto"
+        maxwidth={maxwidth}
+        height="100%"
         viewBox="100 40 400 120"
         xmlns="http://www.w3.org/2000/svg"
         style={{

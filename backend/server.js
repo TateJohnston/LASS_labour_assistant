@@ -3,6 +3,7 @@ require("dotenv").config();
 let dbConnect = require("./dbConnect");
 require("./models");
 const app = express();
+const cors = require("cors");
 
 const employeeRoutes = require("./routes/employeeRoutes");
 const licenseRoutes = require("./routes/licenseRoutes");
@@ -11,6 +12,7 @@ const skillRoutes = require("./routes/skillRoutes");
 const allocationRoutes = require("./routes/allocationRoutes");
 const rosterRoutes = require("./routes/rosterRoutes");
 
+app.use(cors());
 app.use(express.json());
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to my mySQL application." });

@@ -1,26 +1,25 @@
 import { Button } from "@mui/material";
+import { Colors } from "../src/assets/Colors";
 
 const Buttons = ({
   onClick,
   variant,
-  color,
-  fontWeight,
-  width,
+  width = "250px",
   padding,
-  height,
   content,
+  color,
 }) => {
   return (
     <Button
       onClick={onClick}
       variant={variant}
       sx={{
-        backgroundColor: "#1CA89E",
+        backgroundColor: Colors.secondary,
         color: { color },
-        fontWeight: { fontWeight },
+        fontWeight: "bold",
         borderRadius: "5px",
         width: { width },
-        height: { height },
+        height: "50px",
         padding: { padding },
       }}
     >
