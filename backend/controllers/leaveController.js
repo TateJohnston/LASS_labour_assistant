@@ -3,13 +3,27 @@ const Models = require("../models");
 const { sequelize } = require("../models/employees");
 
 const getAllLeave = (req, res) => {
-  Models.LeaveBalances.findAll({})
-    .then((data) => {
-      res.send({ result: 200, data: data });
+  const employeeID = req.query.employeeID;
+
+  if (!employeeID) {
+    Models.LeaveBalances.findAll({})
+      .then((data) => {
+        res.send({ result: 200, data: data });
+      })
+      .catch((err) => {
+        res.status(500).send({ result: 500, error: err.message });
+      });
+  } else {
+    Models.LeaveBalances.findOne({
+      where: { employee_id: employeeID },
     })
-    .catch((err) => {
-      res.status(500).send({ result: 500, error: err.message });
-    });
+      .then((data) => {
+        res.send({ result: 200, data: data });
+      })
+      .catch((err) => {
+        res.status(500).send({ result: 500, error: err.message });
+      });
+  }
 };
 
 const requestLeave = (req, res) => {
@@ -36,7 +50,7 @@ const getLeaveRequests = async (req, res) => {
       })
       .then((data) => {
         if (data.length !== 0) {
-          res.send({ status: 200, result: data });
+          res.send({ status: 200, data: data });
         } else {
           res.send({ status: 404, message: "No leave requests" });
         }
@@ -52,7 +66,7 @@ const getLeaveRequests = async (req, res) => {
       })
       .then((data) => {
         if (data.length !== 0) {
-          res.send({ status: 200, result: data });
+          res.send({ status: 200, data: data });
         } else {
           res.send({ status: 404, message: `Employee has no leave requests.` });
         }
