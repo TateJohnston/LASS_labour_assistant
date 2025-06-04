@@ -21,7 +21,7 @@ Licenses.init(
       allowNull: false,
     },
     expiry: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
   },

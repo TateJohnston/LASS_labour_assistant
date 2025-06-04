@@ -25,11 +25,11 @@ TruckOperators.init(
       },
     },
     last_voc: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
     ticket_expiry: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
     has_skill: {

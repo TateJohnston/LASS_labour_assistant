@@ -21,14 +21,6 @@ LeaveRequests.init(
         key: "employee_id",
       },
     },
-    roster_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "rosters",
-        key: "roster_id",
-      },
-    },
     leave_type: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -40,6 +32,14 @@ LeaveRequests.init(
     comment: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    start_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+    end_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
     },
   },
   {

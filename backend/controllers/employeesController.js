@@ -21,7 +21,7 @@ const getPayslips = (req, res) => {
   Models.Payslips.findAll({
     where: {
       employee_id: employeeID,
-      release: true,
+      // release: true,
     },
   })
     .then((data) => {

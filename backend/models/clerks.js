@@ -26,7 +26,7 @@ Clerks.init(
     },
 
     last_voc: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
     has_skill: {
