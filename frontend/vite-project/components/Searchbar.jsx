@@ -11,6 +11,7 @@ const SearchBar = ({ value, onChange, options, label, width }) => {
       disablePortal
       options={options}
       sx={{
+        backgroundColor: "white",
         width,
         "& .MuiOutlinedInput-root": {
           borderRadius: "5px",

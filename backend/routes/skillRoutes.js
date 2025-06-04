@@ -34,4 +34,11 @@ router.post("/create/clerk/:employeeID", (req, res) => {
   skillsController.createClerk(req, res);
 });
 
+router.put("/revoke/:employeeID/:roleID", (req, res) => {
+  skillsController.revokeSkill(req, res);
+});
+router.put("/reinstate/:employeeID/:roleID", (req, res) => {
+  skillsController.reinstateSkill(req, res);
+});
+
 module.exports = router;

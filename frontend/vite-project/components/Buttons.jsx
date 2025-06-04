@@ -7,19 +7,20 @@ const Buttons = ({
   width = "250px",
   padding,
   content,
-  color,
+  height = "50px",
+  backgroundColor = Colors.secondary,
 }) => {
   return (
     <Button
       onClick={onClick}
       variant={variant}
       sx={{
-        backgroundColor: Colors.secondary,
-        color: { color },
+        backgroundColor: { backgroundColor },
+        color: Colors.content,
         fontWeight: "bold",
         borderRadius: "5px",
         width: { width },
-        height: "50px",
+        height: { height },
         padding: { padding },
       }}
     >

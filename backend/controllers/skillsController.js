@@ -1,4 +1,4 @@
-const { json, where } = require("sequelize");
+const { json, where, Model } = require("sequelize");
 const Models = require("../models");
 const { sequelize } = require("../models/employees");
 
@@ -190,6 +190,60 @@ const createTruckOperator = (req, res) => {
     });
 };
 
+const revokeSkill = (req, res) => {
+  const employeeID = req.params.employeeID;
+  const roleID = req.params.roleID;
+  const skillDictionary = {
+    1: Models.Foreman,
+    2: Models.CraneOperators,
+    3: Models.Clerks,
+    4: Models.TruckOperators,
+    5: Models.ForkliftOperators,
+  };
+
+  skillDictionary[roleID]
+    .update({ has_skill: false }, { where: { employee_id: employeeID } })
+    .then((res) => {
+      res.send({ result: 200, message: "Skill successfully revoked" });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        result: 500,
+        error: err.message,
+        employeeID: employeeID,
+        roleID: roleID,
+        role: skillDictionary[roleID],
+      });
+    });
+};
+
+const reinstateSkill = (req, res) => {
+  const employeeID = req.params.employeeID;
+  const roleID = req.params.roleID;
+  const skillDictionary = {
+    1: Models.Foreman,
+    2: Models.CraneOperators,
+    3: Models.Clerks,
+    4: Models.TruckOperators,
+    5: Models.ForkliftOperators,
+  };
+
+  skillDictionary[roleID]
+    .update({ has_skill: true }, { where: { employee_id: employeeID } })
+    .then((res) => {
+      res.send({ result: 200, message: "Skill successfully revoked" });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        result: 500,
+        error: err.message,
+        employeeID: employeeID,
+        roleID: roleID,
+        role: skillDictionary[roleID],
+      });
+    });
+};
+
 module.exports = {
   getEmployeesSkills,
   getExpiringTickets,
@@ -199,4 +253,6 @@ module.exports = {
   createCraneOperator,
   createForkOperator,
   createTruckOperator,
+  revokeSkill,
+  reinstateSkill,
 };
