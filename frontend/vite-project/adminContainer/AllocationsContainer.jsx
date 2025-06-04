@@ -328,7 +328,7 @@ const AllocationsContainer = () => {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  // justifyContent: "space-evenly",
+
                   boxSizing: "border-box",
                   overflowY: "auto",
                 }}
