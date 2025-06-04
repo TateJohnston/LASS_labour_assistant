@@ -1,18 +1,24 @@
 "use strict";
 
 const { json } = require("sequelize");
-const { sequelize, create } = require("../models");
+const { sequelize, create } = require("../models/clerks");
 const Models = require("../models");
 const redisClient = require("../redisClient");
 const DEFAULT_EXPIRATION = 3600;
 
 const getEmployees = (req, res) => {
-  Models.Employees.findAll({})
+  const query = `SELECT * FROM employee_details`;
+
+  sequelize
+    .query(query, {
+      type: sequelize.QueryTypes.SELECT,
+    })
     .then((data) => {
-      res.send({ result: 200, data: data });
+      res.send({ status: 200, data: data });
     })
     .catch((err) => {
-      res.status(500).send({ result: 500, error: err.messaage });
+      console.log(err);
+      res.send({ status: 500, error: err.message });
     });
 };
 
@@ -21,7 +27,7 @@ const getPayslips = (req, res) => {
   Models.Payslips.findAll({
     where: {
       employee_id: employeeID,
-      // release: true,
+      release: true,
     },
   })
     .then((data) => {
