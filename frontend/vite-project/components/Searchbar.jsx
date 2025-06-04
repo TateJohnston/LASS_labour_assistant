@@ -7,7 +7,7 @@ const SearchBar = ({ value, onChange, options, label, width }) => {
   return (
     <Autocomplete
       value={value}
-      onChange={onChange}
+      onChange={(event, newValue) => onChange(newValue)}
       disablePortal
       options={options}
       sx={{

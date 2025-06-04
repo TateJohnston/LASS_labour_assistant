@@ -2,19 +2,22 @@ import * as React from "react";
 import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
 
-const BasicDatePicker = ({ width, onChange }) => {
-  let today = new Date();
+const DateSelector = ({ onChange }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
-        onChange={onChange}
-        defaultValue={dayjs(today)}
+        sx={{
+          backgroundColor: "white",
+          width: "300px",
+          borderRadius: "5px",
+          textAlign: "center",
+        }}
+        onChange={(newValue) => onChange(newValue)}
         label="Select Date"
       />
     </LocalizationProvider>
   );
 };
 
-export default BasicDatePicker;
+export default DateSelector;

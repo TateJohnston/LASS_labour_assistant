@@ -30,7 +30,7 @@ const RosterContainer = () => {
       });
   }, []);
 
-  return <Calendar events={shiftDates} height={"100%"} />;
+  return <Calendar events={shiftDates} height={"800px"} />;
 };
 
 export default RosterContainer;

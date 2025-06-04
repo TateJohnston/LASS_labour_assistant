@@ -8,10 +8,12 @@ import Calendar from "../components/Calendar";
 import RosterContainer from "../employeeContainers/RosterContainer";
 import EmployeeLeaveContainer from "../employeeContainers/LeaveContainer";
 import EmployeePayslipsContainer from "../employeeContainers/PayslipsContainer";
+import HomeContainer from "../adminContainer/HomeContainer";
+import AllocationsContainer from "../adminContainer/AllocationsContainer";
 
-const EmployeePage = () => {
-  const [user, setUser] = useState("Tate Johnston");
-  const [content, setContent] = useState("Roster");
+const AdminPage = () => {
+  const [user, setUser] = useState("Labour Manager");
+  const [content, setContent] = useState("Home");
 
   return (
     <div
@@ -94,20 +96,50 @@ const EmployeePage = () => {
           <Buttons
             width="150px"
             color={Colors.content}
-            content={"Roster"}
-            onClick={() => setContent("Roster")}
+            content={"Home"}
+            onClick={() => setContent("Home")}
           />
           <Buttons
             width="150px"
             color={Colors.content}
-            content={"Leave"}
-            onClick={() => setContent("Leave")}
+            content={"Allocations"}
+            onClick={() => setContent("Allocations")}
           />
           <Buttons
             width="150px"
             color={Colors.content}
-            content={"Payslips"}
-            onClick={() => setContent("Payslips")}
+            content={"Employees"}
+            onClick={() => setContent("Employees")}
+          />
+          <Buttons
+            width="150px"
+            color={Colors.content}
+            content={"Leave Requests"}
+            onClick={() => setContent("Leave Requests")}
+          />
+          <Buttons
+            width="150px"
+            color={Colors.content}
+            content={"Licenses"}
+            onClick={() => setContent("Licenses")}
+          />
+          <Buttons
+            width="150px"
+            color={Colors.content}
+            content={"Reports"}
+            onClick={() => setContent("Reports")}
+          />
+          <Buttons
+            width="150px"
+            color={Colors.content}
+            content={"Teams"}
+            onClick={() => setContent("Teams")}
+          />
+          <Buttons
+            width="150px"
+            color={Colors.content}
+            content={"Payroll"}
+            onClick={() => setContent("Payroll")}
           />
         </Box>
         <Box
@@ -120,27 +152,12 @@ const EmployeePage = () => {
             paddingTop: "0",
           }}
         >
-          <Box
-            sx={{
-              backgroundColor: Colors.content,
-              height: "fit-content",
-              maxHeight: "800px",
-              width: content === "Roster" ? "60%" : "fit-content",
-              border: `2px solid ${Colors.secondary}`,
-              borderRadius: "20px",
-              padding: "20px",
-              marginBottom: "50px",
-              overflowY: "auto",
-            }}
-          >
-            {content === "Roster" && <RosterContainer />}
-            {content === "Leave" && <EmployeeLeaveContainer />}
-            {content === "Payslips" && <EmployeePayslipsContainer />}
-          </Box>
+          {content === "Home" && <HomeContainer />}
+          {content === "Allocations" && <AllocationsContainer />}
         </Box>
       </div>
     </div>
   );
 };
 
-export default EmployeePage;
+export default AdminPage;

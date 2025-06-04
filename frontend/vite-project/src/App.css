@@ -32,3 +32,18 @@
 .read-the-docs {
   color: #888;
 }
+
+.MuiGrid-root.MuiGrid-container.css-8m6qq6-MuiGrid-root {
+  column-gap: 19px;
+}
+.MuiBackdrop-root {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+/* Optional: make sure the calendar itself still allows interaction */
+.custom-date-range .MuiPaper-root {
+  pointer-events: auto !important;
+  z-index: 10; /* lower z-index so it doesn't block other components */
+  position: relative !important;
+}

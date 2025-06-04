@@ -53,7 +53,7 @@ Payslips.init(
       allowNull: false,
     },
     pay_day: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: true,
     },
     release: {

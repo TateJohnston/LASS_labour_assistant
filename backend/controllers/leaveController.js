@@ -40,8 +40,8 @@ const requestLeave = (req, res) => {
 const getLeaveRequests = async (req, res) => {
   //WHen working on front end, if a specific employee is selected make sure to have a query after the requests eg http://localhost:8081/lass/leave/requests/?employeeID=1
   const employeeID = req.query.employeeID;
-  const queryAll = `SELECT * FROM leave_request_page;`;
-  const queryOne = `SELECT * FROM leave_request_page WHERE employee_id = ${employeeID}`;
+  const queryAll = `SELECT * FROM leave_requests;`;
+  const queryOne = `SELECT * FROM leave_requests WHERE employee_id = ${employeeID}`;
 
   if (!employeeID) {
     sequelize
