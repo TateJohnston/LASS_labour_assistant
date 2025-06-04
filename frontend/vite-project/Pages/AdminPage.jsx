@@ -10,6 +10,7 @@ import EmployeeLeaveContainer from "../employeeContainers/LeaveContainer";
 import EmployeePayslipsContainer from "../employeeContainers/PayslipsContainer";
 import HomeContainer from "../adminContainer/HomeContainer";
 import AllocationsContainer from "../adminContainer/AllocationsContainer";
+import EmployeesContainer from "../adminContainer/EmployeesContainer";
 
 const AdminPage = () => {
   const [user, setUser] = useState("Labour Manager");
@@ -154,6 +155,7 @@ const AdminPage = () => {
         >
           {content === "Home" && <HomeContainer />}
           {content === "Allocations" && <AllocationsContainer />}
+          {content === "Employees" && <EmployeesContainer />}
         </Box>
       </div>
     </div>
