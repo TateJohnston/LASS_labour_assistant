@@ -17,10 +17,6 @@ const EmployeesContainer = () => {
   const [reinstatedSkill, setReinstatedSkill] = useState("");
 
   useEffect(() => {
-    console.log(showEmployeeDetails);
-  }, [showEmployeeDetails]);
-
-  useEffect(() => {
     axios
       .get("http://localhost:8081/lass/employees/")
       .then((res) => {
@@ -55,8 +51,6 @@ const EmployeesContainer = () => {
       </Box>
     );
   };
-
-  const editSkills = (employeeDetails) => {};
 
   const handleSkills = (role, hasSkill, ticketExpiry, lastVOC) => {
     if (!lastVOC) return;
@@ -130,26 +124,32 @@ const EmployeesContainer = () => {
   };
 
   const revokeSkill = async (employeeID, roleID) => {
-    window.alert("Are you sure you want to revoke this skill?");
-    setRevokedSkill(roleID);
+    const confirm = window.confirm(
+      "Are you sure you want to revoke this skill?"
+    );
+    if (!confirm) return;
+
     axios
       .put(`http://localhost:8081/lass/skills/revoke/${employeeID}/${roleID}`)
       .then((res) => {
-        console.log(res);
+        if (res.status === 200) setRevokedSkill(roleID);
       })
       .catch((err) => {
         console.log(err);
       });
   };
   const reinstateSkill = (employeeID, roleID) => {
-    window.alert("Are you sure you want to reinstate this skill?");
+    const confirm = window.confirm(
+      "Are you sure you want to reinstate this skill?"
+    );
+    if (!confirm) return;
     setReinstatedSkill(roleID);
     axios
       .put(
         `http://localhost:8081/lass/skills/reinstate/${employeeID}/${roleID}`
       )
       .then((res) => {
-        console.log(res);
+        if (res.status === 200) setReinstatedSkill(roleID);
       })
       .catch((err) => {
         console.log(err);

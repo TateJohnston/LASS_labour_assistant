@@ -1,11 +1,18 @@
 import { ArrowDropDownCircle } from "@mui/icons-material";
 import { Colors } from "../src/assets/Colors";
 
-const DropDownButton = ({ fontSize = "30px", onClick, height, width }) => {
+const DropDownButton = ({
+  fontSize = "30px",
+  onClick,
+  height,
+  width,
+  flex,
+}) => {
   return (
     <ArrowDropDownCircle
       onClick={onClick}
       sx={{
+        flex,
         height: "45px",
         width: "45px",
         color: Colors.secondary,

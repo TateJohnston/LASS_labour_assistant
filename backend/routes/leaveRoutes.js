@@ -14,7 +14,11 @@ router.get("/requests", (req, res) => {
   leaveController.getLeaveRequests(req, res);
 });
 
-router.put("/requests/approve/:leaverequestID", (req, res) => {
+router.get("/request/:leaverequestID", (req, res) => {
+  leaveController.getSpecificLeaveRequest(req, res);
+});
+
+router.put("/requests/approve/", (req, res) => {
   leaveController.approveLeave(req, res);
 });
 
