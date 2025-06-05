@@ -8,9 +8,10 @@ import Calendar from "../components/Calendar";
 import RosterContainer from "../employeeContainers/RosterContainer";
 import EmployeeLeaveContainer from "../employeeContainers/LeaveContainer";
 import EmployeePayslipsContainer from "../employeeContainers/PayslipsContainer";
-import HomeContainer from "../adminContainer/HomeContainer";
-import AllocationsContainer from "../adminContainer/AllocationsContainer";
-import EmployeesContainer from "../adminContainer/EmployeesContainer";
+import HomeContainer from "../adminContainers/HomeContainer";
+import AllocationsContainer from "../adminContainers/AllocationsContainer";
+import EmployeesContainer from "../adminContainers/EmployeesContainer";
+import LeaveRequestContainer from "../adminContainers/LeaveRequestsContainer";
 
 const AdminPage = () => {
   const [user, setUser] = useState("Labour Manager");
@@ -156,6 +157,7 @@ const AdminPage = () => {
           {content === "Home" && <HomeContainer />}
           {content === "Allocations" && <AllocationsContainer />}
           {content === "Employees" && <EmployeesContainer />}
+          {content === "Leave Requests" && <LeaveRequestContainer />}
         </Box>
       </div>
     </div>

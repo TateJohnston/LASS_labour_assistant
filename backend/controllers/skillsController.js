@@ -203,16 +203,13 @@ const revokeSkill = (req, res) => {
 
   skillDictionary[roleID]
     .update({ has_skill: false }, { where: { employee_id: employeeID } })
-    .then((res) => {
+    .then((data) => {
       res.send({ result: 200, message: "Skill successfully revoked" });
     })
     .catch((err) => {
       res.status(500).send({
         result: 500,
         error: err.message,
-        employeeID: employeeID,
-        roleID: roleID,
-        role: skillDictionary[roleID],
       });
     });
 };
@@ -230,16 +227,13 @@ const reinstateSkill = (req, res) => {
 
   skillDictionary[roleID]
     .update({ has_skill: true }, { where: { employee_id: employeeID } })
-    .then((res) => {
+    .then((data) => {
       res.send({ result: 200, message: "Skill successfully revoked" });
     })
     .catch((err) => {
       res.status(500).send({
         result: 500,
         error: err.message,
-        employeeID: employeeID,
-        roleID: roleID,
-        role: skillDictionary[roleID],
       });
     });
 };

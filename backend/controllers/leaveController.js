@@ -37,87 +37,91 @@ const requestLeave = (req, res) => {
     });
 };
 
-const getLeaveRequests = async (req, res) => {
-  //WHen working on front end, if a specific employee is selected make sure to have a query after the requests eg http://localhost:8081/lass/leave/requests/?employeeID=1
-  const employeeID = req.query.employeeID;
-  const queryAll = `SELECT * FROM leave_requests;`;
-  const queryOne = `SELECT * FROM leave_requests WHERE employee_id = ${employeeID}`;
+const getLeaveRequests = (req, res) => {
+  const query = `SELECT * FROM leave_request_view`;
 
-  if (!employeeID) {
-    sequelize
-      .query(queryAll, {
-        type: sequelize.QueryTypes.SELECT,
-      })
-      .then((data) => {
-        if (data.length !== 0) {
-          res.send({ status: 200, data: data });
-        } else {
-          res.send({ status: 404, message: "No leave requests" });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        res.send({ status: 500, error: err.message });
-      });
-  } else {
-    sequelize
-      .query(queryOne, {
-        type: sequelize.QueryTypes.SELECT,
-      })
-      .then((data) => {
-        if (data.length !== 0) {
-          res.send({ status: 200, data: data });
-        } else {
-          res.send({ status: 404, message: `Employee has no leave requests.` });
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        res.send({ status: 500, error: err.message });
-      });
-  }
+  sequelize
+    .query(query, {
+      type: sequelize.QueryTypes.SELECT,
+    })
+    .then((data) => {
+      if (data.length !== 0) {
+        res.send({ status: 200, data: data });
+      } else {
+        res.send({ status: 404, message: "No leave requests" });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send({ status: 500, error: err.message });
+    });
+};
+
+const getSpecificLeaveRequest = (req, res) => {
+  const requestID = req.params.leaverequestID;
+  const query = `SELECT * FROM edit_leave_request_view WHERE leave_request_id = ${requestID}`;
+  sequelize
+    .query(query, {
+      type: sequelize.QueryTypes.SELECT,
+    })
+    .then((data) => {
+      if (data.length !== 0) {
+        res.send({ status: 200, data: data });
+      } else {
+        res.send({ status: 404, message: "No leave requests" });
+      }
+    })
+    .catch((err) => {
+      console.log(err, requestID);
+      res.send({ status: 500, error: err.message });
+    });
 };
 
 const approveLeave = async (req, res) => {
-  const leaveRequestID = req.params.leaverequestID;
+  const leaveDictionary = {
+    "Annual Leave": "al_balance",
+    "Long Service Leave": "lsl_balance",
+    "Sick Leave": "sl_balance",
+    "Day In Lieu": "dil_balance",
+    "Maternity Leave": "ml_balance",
+  };
+
+  const employeeID = req.body.employee_id;
+  const leave_request_id = req.body.leave_request_id;
+  const comment = JSON.stringify(req.body.comment);
+  const startDate = JSON.stringify(req.body.start_date);
+  const endDate = JSON.stringify(req.body.end_date);
+  const decrementAmount = req.body.decrement_amount;
+  const leaveType = req.body.leave_type;
+  const leaveColumn = leaveDictionary[leaveType];
+
+  const removeFromRoster = `update rosters
+set available = false
+where date between ${startDate} and ${endDate} and employee_id = ${employeeID}`;
+
+  const approveLeaveRequest = `update leave_requests
+set status = "Approved", comment = ${comment}
+where leave_request_id = ${leave_request_id}`;
 
   try {
-    await Models.LeaveRequests.update(
-      { status: "Approved" },
-      { where: { leave_request_id: leaveRequestID }, returning: true }
-    );
-
-    const leaveRequest = await Models.LeaveRequests.findOne({
-      where: {
-        leave_request_id: leaveRequestID,
-      },
-    });
-    const leaveType = leaveRequest.dataValues.leave_type;
-    const employeeID = leaveRequest.dataValues.employee_id;
-    const rosterID = leaveRequest.dataValues.roster_id;
-
-    const balances = {
-      al: "al_balance",
-      lsl: "lsl_balance",
-      sl: "sl_balance",
-      dil: "dil_balance",
-      ml: "ml_balance",
-    };
-
-    const selectedBalance = balances[leaveType];
-
-    await Models.LeaveBalances.decrement(selectedBalance, {
-      where: { employee_id: employeeID },
+    await sequelize.query(removeFromRoster, {
+      type: sequelize.QueryTypes.UPDATE,
     });
 
-    await Models.Rosters.update(
+    await sequelize.query(approveLeaveRequest, {
+      type: sequelize.QueryTypes.UPDATE,
+    });
+
+    await Models.LeaveBalances.decrement(
+      { [leaveColumn]: decrementAmount },
       {
-        available: false,
-      },
-      { where: { roster_id: rosterID } }
+        where: {
+          employee_id: employeeID,
+        },
+      }
     );
 
-    res.send({ result: 200, message: "Leave successfully approved" });
+    res.send({ result: 200, message: "All updates done and leave approved" });
   } catch (err) {
     res.status(500).send({ result: 500, error: err.message });
   }
@@ -125,10 +129,8 @@ const approveLeave = async (req, res) => {
 
 const denyLeave = (req, res) => {
   const leaveRequestID = req.params.leaverequestID;
-  //In front end make the comment the req.body
-  const comment = "Sorry too many people off";
-  // Change the status in leave_requests to Denied
-  // Put a comment in the comment section in leave_requests
+  const comment = req.body.comment;
+
   Models.LeaveRequests.update(
     { status: "Denied", comment: comment },
     { where: { leave_request_id: leaveRequestID } }
@@ -147,4 +149,5 @@ module.exports = {
   requestLeave,
   getLeaveRequests,
   denyLeave,
+  getSpecificLeaveRequest,
 };

@@ -17,7 +17,7 @@ SELECT
 FROM rosters r
 LEFT JOIN active_skills  ON r.employee_id = active_skills.employee_id
 LEFT JOIN shifts s ON r.shift_id = s.shift_id
-WHERE date = ${date}`;
+WHERE date = ${date} and available = true`;
 
   sequelize
     .query(query, {
