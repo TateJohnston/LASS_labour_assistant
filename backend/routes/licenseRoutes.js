@@ -10,4 +10,8 @@ router.get("/due", (req, res) => {
   licensesController.getDueLicenses(req, res);
 });
 
+router.put("/update/:licenseID", (req, res) => {
+  licensesController.updateLicense(req, res);
+});
+
 module.exports = router;

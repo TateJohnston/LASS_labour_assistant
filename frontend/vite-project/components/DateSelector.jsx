@@ -3,18 +3,18 @@ import { DatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-const DateSelector = ({ onChange }) => {
+const DateSelector = ({ onChange, label = "Select Date", width = "300px" }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         sx={{
           backgroundColor: "white",
-          width: "300px",
+          width,
           borderRadius: "5px",
           textAlign: "center",
         }}
         onChange={(newValue) => onChange(newValue)}
-        label="Select Date"
+        label={label}
       />
     </LocalizationProvider>
   );
