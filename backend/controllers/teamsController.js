@@ -1,6 +1,6 @@
 const { json, where } = require("sequelize");
 const Models = require("../models");
-const { sequelize } = require("../models/employees");
+const { sequelize, update } = require("../models/employees");
 
 const addTeam = (req, res) => {
   Models.Teams.create(req.body)
@@ -63,8 +63,24 @@ const addEmployeeToTeam = async (req, res) => {
     });
 };
 
+const updateBonus = (req, res) => {
+  const team_id = req.body.team_id;
+
+  Models.Teams.update(
+    { bonus: req.body.bonus },
+    { where: { team_id: team_id } }
+  )
+    .then((data) => {
+      res.send({ result: 200, data: data });
+    })
+    .catch((err) => {
+      res.status(500).result({ result: 500, error: err.message });
+    });
+};
+
 module.exports = {
   addTeam,
   getTeams,
   addEmployeeToTeam,
+  updateBonus,
 };

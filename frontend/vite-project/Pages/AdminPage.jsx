@@ -13,6 +13,7 @@ import AllocationsContainer from "../adminContainers/AllocationsContainer";
 import EmployeesContainer from "../adminContainers/EmployeesContainer";
 import LeaveRequestContainer from "../adminContainers/LeaveRequestsContainer";
 import LicensesContainer from "../adminContainers/LicensesContainer";
+import TeamsContainer from "../adminContainers/TeamsContainer";
 
 const AdminPage = () => {
   const [user, setUser] = useState("Labour Manager");
@@ -160,6 +161,7 @@ const AdminPage = () => {
           {content === "Employees" && <EmployeesContainer />}
           {content === "Leave Requests" && <LeaveRequestContainer />}
           {content === "Licenses" && <LicensesContainer />}
+          {content === "Teams" && <TeamsContainer />}
         </Box>
       </div>
     </div>
