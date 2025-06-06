@@ -15,6 +15,8 @@ const InputFields = ({
   rows,
   multiline,
   maxRows,
+  margin,
+  value,
 }) => {
   return (
     <TextField
@@ -22,6 +24,7 @@ const InputFields = ({
       {...(rows && { rows })}
       {...(maxRows && { maxRows })}
       onChange={onChange}
+      value={value}
       id={id}
       label={label}
       variant={variant}
@@ -31,6 +34,7 @@ const InputFields = ({
       InputProps={InputProps}
       type={type}
       sx={{
+        margin,
         width,
         "& .MuiOutlinedInput-root": {
           borderRadius: "5px",

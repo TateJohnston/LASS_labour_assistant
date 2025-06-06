@@ -14,4 +14,8 @@ router.put("/addteam/:date/:employeeID/:teamID/:roleID", (req, res) => {
   teamsController.addEmployeeToTeam(req, res);
 });
 
+router.put("/updatebonus", (req, res) => {
+  teamsController.updateBonus(req, res);
+});
+
 module.exports = router;
