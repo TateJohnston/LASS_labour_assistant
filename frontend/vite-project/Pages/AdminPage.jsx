@@ -14,6 +14,8 @@ import EmployeesContainer from "../adminContainers/EmployeesContainer";
 import LeaveRequestContainer from "../adminContainers/LeaveRequestsContainer";
 import LicensesContainer from "../adminContainers/LicensesContainer";
 import TeamsContainer from "../adminContainers/TeamsContainer";
+import PayrollContainer from "../adminContainers/PayrollContainer";
+import DropdownMenu from "../components/DropdownMenu";
 
 const AdminPage = () => {
   const [user, setUser] = useState("Labour Manager");
@@ -33,14 +35,15 @@ const AdminPage = () => {
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-evenly",
-          borderBottom: "2px solid #1CA89E",
+          // justifyContent: "space-evenly",
         }}
       >
-        <Logo width="200px" />
+        <div style={{ flex: "1" }}>
+          <Logo width="200px" />
+        </div>
         <Typography
           variant="h2"
-          sx={{ color: Colors.primary, fontFamily: "sans-serif" }}
+          sx={{ color: Colors.primary, fontFamily: "sans-serif", flex: "1" }}
         >
           {user}
         </Typography>
@@ -50,6 +53,8 @@ const AdminPage = () => {
             flexDirection: "row",
             gap: "10px",
             alignItems: "center",
+            flex: "1",
+            justifyContent: "center",
           }}
         >
           <NotificationsIcon
@@ -79,6 +84,67 @@ const AdminPage = () => {
           </Avatar>
         </div>
       </div>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "30px",
+          padding: "10px",
+          borderBottom: "2px solid #1CA89E",
+        }}
+      >
+        {/* <DropdownMenu /> */}
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Home"}
+          onClick={() => setContent("Home")}
+        />
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Allocations"}
+          onClick={() => setContent("Allocations")}
+        />
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Employees"}
+          onClick={() => setContent("Employees")}
+        />
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Leave Requests"}
+          onClick={() => setContent("Leave Requests")}
+        />
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Licenses"}
+          onClick={() => setContent("Licenses")}
+        />
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Reports"}
+          onClick={() => setContent("Reports")}
+        />
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Teams"}
+          onClick={() => setContent("Teams")}
+        />
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Payroll"}
+          onClick={() => setContent("Payroll")}
+        />
+      </Box>
       <div
         style={{
           backgroundColor: Colors.primary,
@@ -87,65 +153,6 @@ const AdminPage = () => {
           flexDirection: "column",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "30px",
-            paddingTop: "20px",
-          }}
-        >
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Home"}
-            onClick={() => setContent("Home")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Allocations"}
-            onClick={() => setContent("Allocations")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Employees"}
-            onClick={() => setContent("Employees")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Leave Requests"}
-            onClick={() => setContent("Leave Requests")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Licenses"}
-            onClick={() => setContent("Licenses")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Reports"}
-            onClick={() => setContent("Reports")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Teams"}
-            onClick={() => setContent("Teams")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Payroll"}
-            onClick={() => setContent("Payroll")}
-          />
-        </Box>
         <Box
           sx={{
             height: "100%",
@@ -162,6 +169,7 @@ const AdminPage = () => {
           {content === "Leave Requests" && <LeaveRequestContainer />}
           {content === "Licenses" && <LicensesContainer />}
           {content === "Teams" && <TeamsContainer />}
+          {content === "Payroll" && <PayrollContainer />}
         </Box>
       </div>
     </div>
