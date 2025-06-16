@@ -20,14 +20,18 @@ const TeamsContainer = () => {
       setEmployees(data);
 
       const teamsObj = {};
-
-      data.forEach((employee) => {
-        const teamID = employee.team_id;
-        if (!teamsObj[teamID]) teamsObj[teamID] = [];
-        teamsObj[teamID].push(employee);
-      });
-      setEmployees(data);
-      setTeams(teamsObj);
+      if (data) {
+        data.forEach((employee) => {
+          const teamID = employee.team_id;
+          if (!teamsObj[teamID]) teamsObj[teamID] = [];
+          teamsObj[teamID].push(employee);
+        });
+        setEmployees(data);
+        setTeams(teamsObj);
+      } else {
+        setTeams({});
+        setEmployees([]);
+      }
     });
   };
 
@@ -106,6 +110,7 @@ const TeamsContainer = () => {
                   }}
                 >
                   <Box
+                    key={team_id}
                     sx={{
                       display: "flex",
                       flexDirection: "row",
@@ -232,6 +237,16 @@ const TeamsContainer = () => {
             <Box></Box>
           </Box>
         </Box>
+      )}
+      {!date && (
+        <Typography sx={{ color: "gray" }} variant="h5">
+          Select a date to find teams
+        </Typography>
+      )}
+      {date && Object.entries(teams).length === 0 && (
+        <Typography sx={{ color: "gray" }} variant="h5">
+          No Teams for {date}
+        </Typography>
       )}
     </Box>
   );

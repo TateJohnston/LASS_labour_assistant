@@ -22,15 +22,12 @@ Payslips.init(
     },
     salary: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
+      allowNull: true,
     },
-    overtime: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
-    },
+
     bonus: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
+      allowNull: true,
     },
     upgrades: {
       type: DataTypes.DECIMAL(10, 2),
@@ -38,19 +35,19 @@ Payslips.init(
     },
     gross: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
+      allowNull: true,
     },
     tax: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
+      allowNull: true,
     },
     net: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
+      allowNull: true,
     },
     super: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
+      allowNull: true,
     },
     pay_day: {
       type: DataTypes.DATEONLY,

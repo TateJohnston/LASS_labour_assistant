@@ -9,12 +9,14 @@ const Buttons = ({
   content,
   height = "50px",
   backgroundColor = Colors.secondary,
+  fontSize,
 }) => {
   return (
     <Button
       onClick={onClick}
       variant={variant}
       sx={{
+        fontSize,
         backgroundColor: { backgroundColor },
         color: Colors.content,
         fontWeight: "bold",

@@ -78,7 +78,6 @@ const LeaveRequestContainer = () => {
       .then((res) => {
         const data = res.data.data;
         setSelectedRequest(data);
-        console.log("Fetched Data", data);
       })
       .catch((err) => {
         console.log(err);
@@ -101,7 +100,6 @@ const LeaveRequestContainer = () => {
       })
       .then((data) => {
         setApprovedLeave(true);
-        console.log(data);
       })
       .catch((err) => {
         console.log(err);
@@ -118,16 +116,11 @@ const LeaveRequestContainer = () => {
       )
       .then((data) => {
         setDenyLeave(true);
-        console.log(data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
-
-  useEffect(() => {
-    console.log(selectedRequest);
-  }, [selectedRequest]);
 
   return (
     <Box

@@ -8,9 +8,9 @@ import AdminPage from "../Pages/AdminPage";
 function App() {
   return (
     <>
-      {/* <EmployeePage />  */}
-      {/* <LoginPage /> */}
-      <AdminPage />
+      {/* <EmployeePage /> */}
+      <LoginPage />
+      {/* <AdminPage /> */}
     </>
   );
 }

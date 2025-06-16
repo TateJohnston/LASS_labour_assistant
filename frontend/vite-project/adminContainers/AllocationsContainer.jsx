@@ -28,10 +28,6 @@ const AllocationsContainer = () => {
     Fork: 5,
   };
 
-  useEffect(() => {
-    console.log("Teams use effect", teams);
-  }, [teams]);
-
   const selectedTeams = (employee_id, value) => {
     setTeamSelect((prev) => ({ ...prev, [employee_id]: value }));
   };
@@ -60,7 +56,6 @@ const AllocationsContainer = () => {
       .get(`http://localhost:8081/lass/teams/${fullDate}`)
       .then((res) => {
         const data = res.data.data;
-        console.log("data return", data);
 
         const teamIDs = [];
         data.forEach((entry) => {
@@ -82,7 +77,6 @@ const AllocationsContainer = () => {
           });
         });
 
-        console.log(teamsObject);
         setTeams(teamsObject);
       })
       .catch((err) => {
@@ -114,9 +108,7 @@ const AllocationsContainer = () => {
       .put(
         `http://localhost:8081/lass/teams/addteam/${date}/${employee_id}/${team}/${rolesMap[role]}`
       )
-      .then((res) => {
-        console.log("Successful change", res);
-      })
+      .then((res) => {})
       .catch((err) => {
         console.log(err);
       });
@@ -139,6 +131,12 @@ const AllocationsContainer = () => {
           const month = String(dateStr.getMonth() + 1).padStart(2, "0");
           const day = String(dateStr.getDate()).padStart(2, "0");
           const fullDate = `${year}-${month}-${day}`;
+          setTeams([]);
+          setEmployees([]);
+          setAllocated([]);
+          setRoleSelect({});
+          setTeamSelect({});
+          setSelectedShift("");
           setDate(fullDate);
           fetchEmployees(fullDate);
           fetchTeams(fullDate);
