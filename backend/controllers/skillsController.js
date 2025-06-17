@@ -228,7 +228,7 @@ const reinstateSkill = (req, res) => {
   skillDictionary[roleID]
     .update({ has_skill: true }, { where: { employee_id: employeeID } })
     .then((data) => {
-      res.send({ result: 200, message: "Skill successfully revoked" });
+      res.send({ result: 200, message: "Skill successfully Reinstated" });
     })
     .catch((err) => {
       res.status(500).send({

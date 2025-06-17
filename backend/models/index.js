@@ -30,8 +30,6 @@ const init = async () => {
   await LeaveRequests.sync();
 };
 
-init();
-
 module.exports = {
   Employees,
   ForkliftOperators,
@@ -47,4 +45,5 @@ module.exports = {
   Rosters,
   Roles,
   LeaveRequests,
+  init,
 };

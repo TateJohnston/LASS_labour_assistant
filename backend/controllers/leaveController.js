@@ -121,9 +121,11 @@ where leave_request_id = ${leave_request_id}`;
       }
     );
 
-    res.send({ result: 200, message: "All updates done and leave approved" });
+    res
+      .status(200)
+      .json({ result: 200, message: "All updates done and leave approved" });
   } catch (err) {
-    res.status(500).send({ result: 500, error: err.message });
+    return res.status(500).send({ result: 500, error: err.message });
   }
 };
 
