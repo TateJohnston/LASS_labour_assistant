@@ -55,7 +55,7 @@ const addEmployeeToTeam = async (req, res) => {
       if (data) {
         res.send({ result: 200, data: data, employeeID, teamID, roleID, date });
       } else {
-        res.send("Nothing happened");
+        res.send("No Changes");
       }
     })
     .catch((err) => {

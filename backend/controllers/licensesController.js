@@ -31,9 +31,9 @@ const getDueLicenses = (req, res) => {
     })
     .then((data) => {
       if (data.length > 0) {
-        res.send({ result: 200, data: data });
+        res.status(200).send({ result: 200, data: data });
       } else {
-        res.send({
+        res.status(400).send({
           result: 404,
           message: "No licenses expiring within 30 days",
         });

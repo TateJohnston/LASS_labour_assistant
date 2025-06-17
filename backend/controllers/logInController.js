@@ -25,7 +25,7 @@ const logIn = async (req, res) => {
     if (!validPassword) {
       return res.send({ result: 404, message: "Wrong Password" });
     }
-    res.send({
+    res.status(200).send({
       result: 200,
       message: "Successful Login",
       data: matchingEmployee,
@@ -86,9 +86,12 @@ const createPassword = async (req, res) => {
       { password: hash },
       { where: { work_email: email } }
     );
-    res.json(updatedEmployee);
+    res.status(200).json({
+      message: "Password Successfully Created",
+      data: updatedEmployee,
+    });
   } catch (err) {
-    res.status(500).send({ result: 500, error: err.message });
+    res.status(500).json({ result: 500, error: err.message });
   }
 };
 

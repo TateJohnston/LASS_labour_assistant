@@ -4,7 +4,7 @@
   "description": "LASS_labour_assistant",
   "main": "dbConnect.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "nodemon server.js"
   },
   "author": "Tate Johnston",
@@ -24,5 +24,9 @@
     "sequelize": "^6.37.7",
     "swagger-ui-express": "^5.0.1",
     "twilio": "^5.7.1"
+  },
+  "devDependencies": {
+    "jest": "^30.0.0",
+    "supertest": "^7.1.1"
   }
 }

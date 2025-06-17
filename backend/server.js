@@ -1,7 +1,7 @@
 const express = require("express");
 require("dotenv").config();
 let dbConnect = require("./dbConnect");
-require("./models");
+const { init } = require("./models");
 const app = express();
 const cors = require("cors");
 
@@ -32,6 +32,17 @@ app.use("/lass/payroll", payrollRoutes);
 app.use("/lass/logIn", logInRoutes);
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
+
+if (process.env.NODE_ENV !== "test") {
+  init()
+    .then(() => {
+      app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}.`);
+      });
+    })
+    .catch((err) => {
+      console.error("Failed to initialize models:", err);
+    });
+} else {
+  module.exports = app;
+}
