@@ -1,16 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { DateRangePicker } from "mui-daterange-picker";
+import React, { useState } from "react";
+import { DateRange } from "react-date-range";
+import { addDays } from "date-fns";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 
 const DateRangeSelector = ({ onChange, open, toggle }) => {
+  const [range, setRange] = useState([
+    {
+      startDate: new Date(),
+      endDate: addDays(new Date(), 7),
+      key: "selection",
+    },
+  ]);
+
+  const handleSelect = (ranges) => {
+    setRange([ranges.selection]);
+    onChange(ranges.selection);
+  };
+
+  if (!open) return null;
+
   return (
-    <div>
-      <DateRangePicker
-        toggle={toggle}
-        open={open}
-        onChange={onChange}
-        wrapperClassName="custom-date-range"
-        closeOnClickOutside={false}
+    <div style={{ zIndex: 10 }}>
+      <DateRange
+        editableDateInputs
+        onChange={handleSelect}
+        moveRangeOnFirstSelection={false}
+        ranges={range}
       />
+      <button onClick={toggle} style={{ marginTop: "10px" }}>
+        Close
+      </button>
     </div>
   );
 };

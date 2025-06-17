@@ -1,10 +1,12 @@
 import axios from "axios";
 import Calendar from "../components/Calendar";
 import { Colors } from "../src/assets/Colors";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../context/UserContext";
 
 const RosterContainer = () => {
   const [shiftDates, setShiftDates] = useState([]);
+  const { userDetails } = useContext(UserContext);
 
   const shiftColors = {
     "Day Shift": Colors.primary,
@@ -15,7 +17,7 @@ const RosterContainer = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8081/lass/rosters/1/")
+      .get(`http://localhost:8081/lass/rosters/${userDetails.employeeID}/`)
       .then((data) => {
         const employeeData = data.data.data;
         const fullShiftData = employeeData.map((shift) => ({

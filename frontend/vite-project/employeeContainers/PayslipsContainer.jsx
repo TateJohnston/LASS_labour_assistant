@@ -1,17 +1,21 @@
 import { Box, Typography } from "@mui/material";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import DropDownButton from "../components/DropDownButton";
 import { ColorLens } from "@mui/icons-material";
 import { Colors } from "../src/assets/Colors";
+import { UserContext } from "../context/UserContext";
 
 const EmployeePayslipsContainer = () => {
   const [selectedPayslip, setSelectedPayslip] = useState({});
   const [payslips, setPayslips] = useState([]);
+  const { userDetails } = useContext(UserContext);
 
   useEffect(() => {
     axios
-      .get("http://localhost:8081/lass/employees/payslips/1")
+      .get(
+        `http://localhost:8081/lass/employees/payslips/${userDetails.employeeID}`
+      )
       .then((res) => {
         const data = res.data.data;
         const sorted = data.sort((a, b) => b.payslip_id - a.payslip_id);
@@ -96,19 +100,7 @@ const EmployeePayslipsContainer = () => {
                   ${selectedPayslip.salary}
                 </Typography>
               </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Typography variant="h5">Overtime: </Typography>
-                <Typography variant="h5" sx={{ color: Colors.secondary }}>
-                  ${selectedPayslip.overtime}
-                </Typography>
-              </Box>
+
               <Box
                 sx={{
                   display: "flex",

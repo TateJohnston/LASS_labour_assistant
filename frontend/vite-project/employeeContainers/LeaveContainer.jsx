@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { Box, Typography } from "@mui/material";
@@ -8,6 +8,7 @@ import DateSelector from "../components/DateSelector";
 import DateRangeSelector from "../components/DateRangeSelector";
 import DropDownButton from "../components/DropDownButton";
 import SearchBar from "../components/Searchbar";
+import { UserContext } from "../context/UserContext";
 
 const EmployeeLeaveContainer = () => {
   const [leaveBalances, setLeaveBalances] = useState([]);
@@ -19,6 +20,7 @@ const EmployeeLeaveContainer = () => {
   const [endDate, setEndDate] = useState();
   const [leaveType, setLeaveType] = useState();
   const [submitted, setSubmitted] = useState(null);
+  const { userDetails } = useContext(UserContext);
 
   const toggle = () => setOpen(!open);
 
@@ -29,7 +31,7 @@ const EmployeeLeaveContainer = () => {
 
   const submitRequest = () => {
     const leaveRequestObject = {
-      employee_id: 1,
+      employee_id: userDetails.employeeID,
       leave_type: leaveType,
       status: "Pending",
       comment: null,
@@ -63,20 +65,26 @@ const EmployeeLeaveContainer = () => {
   ];
 
   useEffect(() => {
-    axios.get("http://localhost:8081/lass/leave?employeeID=1").then((res) => {
-      const data = res.data.data;
-      const balanceObject = [
-        { label: "Annual Leave", value: `${data.al_balance} days` },
-        { label: "Long Service Leave", value: `${data.lsl_balance} days` },
-        { label: "Sick Leave", value: `${data.sl_balance} days` },
-        { label: "Days in Lieu", value: `${data.dil_balance} days` },
-        { label: "Maternity Leave", value: `${data.ml_balance} days` },
-      ];
-      setLeaveBalances(balanceObject);
-    });
+    axios
+      .get(
+        `http://localhost:8081/lass/leave?employeeID=${userDetails.employeeID}`
+      )
+      .then((res) => {
+        const data = res.data.data;
+        const balanceObject = [
+          { label: "Annual Leave", value: `${data.al_balance} days` },
+          { label: "Long Service Leave", value: `${data.lsl_balance} days` },
+          { label: "Sick Leave", value: `${data.sl_balance} days` },
+          { label: "Days in Lieu", value: `${data.dil_balance} days` },
+          { label: "Maternity Leave", value: `${data.ml_balance} days` },
+        ];
+        setLeaveBalances(balanceObject);
+      });
 
     axios
-      .get("http://localhost:8081/lass/leave/requests?employeeID=1")
+      .get(
+        `http://localhost:8081/lass/leave/requests?employeeID=${userDetails.employeeID}`
+      )
       .then((res) => {
         const data = res.data.data;
         const sortedByRequestDate = data.sort(

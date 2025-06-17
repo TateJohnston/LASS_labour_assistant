@@ -5,27 +5,31 @@ import {
   DialogContentText,
   DialogTitle,
   Button,
+  TextField,
+  Typography,
 } from "@mui/material";
+import { Colors } from "../src/assets/Colors";
 
 const DialogueBox = ({
   open,
+  onClose,
   confirmClick,
   dialogueMessage,
   dialogueTitle,
+  showTextField,
+  showFailedMessage,
+  failedMessage,
+  textFieldName,
+  textFieldLabel,
+  textFieldType,
+  cancelText,
+  submitText,
+  textFieldChange,
 }) => {
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
+      onClose={onClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -34,11 +38,28 @@ const DialogueBox = ({
         <DialogContentText id="alert-dialog-description">
           {dialogueMessage}
         </DialogContentText>
+        {showTextField && (
+          <TextField
+            autoFocus
+            required
+            margin="dense"
+            id="name"
+            name={textFieldName}
+            label={textFieldLabel}
+            type={textFieldType}
+            fullWidth
+            variant="standard"
+            onChange={textFieldChange}
+          />
+        )}
+        {showFailedMessage && (
+          <Typography sx={{ color: Colors.error }}>{failedMessage}</Typography>
+        )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Disagree</Button>
+        <Button onClick={onClose}>{cancelText}</Button>
         <Button onClick={confirmClick} autoFocus>
-          Agree
+          {submitText}
         </Button>
       </DialogActions>
     </Dialog>
