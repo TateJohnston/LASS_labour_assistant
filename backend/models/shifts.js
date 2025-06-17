@@ -24,10 +24,6 @@ Shifts.init(
       type: DataTypes.TIME,
       allowNull: false,
     },
-    value: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
   },
   {
     sequelize: sequelizeInstance,
