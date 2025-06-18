@@ -1,39 +1,35 @@
 import { Typography, Box } from "@mui/material";
 import DateSelector from "../components/DateSelector";
 import SearchBar from "../components/Searchbar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Colors } from "../src/assets/Colors";
 import axios from "axios";
-import DoneIcon from "@mui/icons-material/Done";
-import EditIcon from "@mui/icons-material/Edit";
-import InputFields from "../components/InputFields";
 import Buttons from "../components/Buttons";
-import DropdownSelect from "../components/DropdownSelect";
+import AvailableEmployee from "../components/AvailableEmployees";
+import EmployeeShiftAllocation from "../components/EmployeeShiftAllocation";
+import AllocationTeamDisplay from "../components/AllocationTeamDisplay";
+import dateToDMY from "../utilities/dateToDMY";
 
 const AllocationsContainer = () => {
   const [date, setDate] = useState("");
   const [employees, setEmployees] = useState([]);
-  const [selectedShift, setSelectedShift] = useState("");
   const [teams, setTeams] = useState([]);
+  const [allocated, setAllocated] = useState([]);
   const [teamSelect, setTeamSelect] = useState({});
   const [roleSelect, setRoleSelect] = useState({});
-  const [allocated, setAllocated] = useState([]);
+  const [selectedShift, setSelectedShift] = useState("");
 
   const shiftsMap = { "Night Shift": 1, "Day Shift": 2, "Evening Shift": 3 };
-  const rolesMap = {
-    Foreman: 1,
-    Crane: 2,
-    Clerk: 3,
-    Truck: 4,
-    Fork: 5,
-  };
 
-  const selectedTeams = (employee_id, value) => {
-    setTeamSelect((prev) => ({ ...prev, [employee_id]: value }));
-  };
-
-  const selectedRoles = (employee_id, role) => {
-    setRoleSelect((prev) => ({ ...prev, [employee_id]: role }));
+  const resetStates = (fullDate) => {
+    setTeams([]);
+    setEmployees([]);
+    setAllocated([]);
+    setRoleSelect({});
+    setTeamSelect({});
+    setDate(fullDate);
+    fetchEmployees(fullDate);
+    fetchTeams(fullDate);
   };
 
   const fetchEmployees = (fullDate) => {
@@ -103,17 +99,6 @@ const AllocationsContainer = () => {
       });
   };
 
-  const addEmployeeToTeam = (employee_id, team, role, date) => {
-    return axios
-      .put(
-        `http://localhost:8081/lass/teams/addteam/${date}/${employee_id}/${team}/${rolesMap[role]}`
-      )
-      .then((res) => {})
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   return (
     <Box
       sx={{
@@ -131,340 +116,134 @@ const AllocationsContainer = () => {
           const month = String(dateStr.getMonth() + 1).padStart(2, "0");
           const day = String(dateStr.getDate()).padStart(2, "0");
           const fullDate = `${year}-${month}-${day}`;
-          setTeams([]);
-          setEmployees([]);
-          setAllocated([]);
-          setRoleSelect({});
-          setTeamSelect({});
-          setSelectedShift("");
-          setDate(fullDate);
-          fetchEmployees(fullDate);
-          fetchTeams(fullDate);
+          resetStates(fullDate);
         }}
       />
       {date && (
-        <>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            width: "80vw",
+            gap: "30px",
+          }}
+        >
           <Box
             sx={{
+              flex: "1.8",
+              display: "flex",
+              flexDirection: "column",
               backgroundColor: Colors.content,
               height: "fit-content",
               maxHeight: "800px",
-              width: "80vw",
               border: `2px solid ${Colors.secondary}`,
               borderRadius: "20px",
-              padding: "20px",
+              padding: "8px",
+              overflowY: "auto",
+              "&::-webkit-scrollbar": {
+                width: "8px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(0,0,0,0.2)",
+                borderRadius: "10px",
+              },
+            }}
+          >
+            <Typography
+              sx={{
+                textDecoration: "underline",
+                color: Colors.secondary,
+              }}
+              variant="h4"
+            >
+              Available employees for {dateToDMY(date)}
+            </Typography>
+            {employees.map((employee) => (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "100%",
+                  alignItems: "center",
+                  borderBottom: `2px solid ${Colors.secondary}`,
+                }}
+              >
+                <Box sx={{ flex: "1.2" }}>
+                  <AvailableEmployee employee={employee} />
+                </Box>
+                <Box sx={{ flex: "1", marginRight: "20px" }}>
+                  <EmployeeShiftAllocation
+                    employee={employee}
+                    allocated={allocated}
+                    setRoleSelect={setRoleSelect}
+                    setTeamSelect={setTeamSelect}
+                    roleSelect={roleSelect}
+                    teamSelect={teamSelect}
+                    teams={teams}
+                    date={date}
+                    fetchTeams={fetchTeams}
+                  />
+                </Box>
+              </Box>
+            ))}
+          </Box>
+          <Box
+            sx={{
+              flex: "0.8",
+              display: "flex",
+              flexDirection: "column",
+              gap: "15px",
+              alignItems: "center",
+              maxHeight: "800px",
+              padding: "8px",
+              borderRadius: "20px",
+              border: `2px solid ${Colors.secondary}`,
+              overflowY: "auto",
+              backgroundColor: "white",
+              "&::-webkit-scrollbar": {
+                width: "8px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(0,0,0,0.2)",
+                borderRadius: "10px",
+              },
             }}
           >
             <Box
               sx={{
                 display: "flex",
-                flexDirection: "column",
+                flexDirection: "row",
+                gap: "30px",
                 alignItems: "center",
-                flex: "1.5",
-                gap: "20px",
-                maxHeight: "740px",
-                paddingRight: "10px",
               }}
             >
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  gap: "20px",
-                  width: "100%",
-                  overflow: "hidden",
-                  boxSizing: "border-box",
+              <SearchBar
+                options={["Day Shift", "Evening Shift", "Night Shift"]}
+                width={"100%"}
+                value={selectedShift ? selectedShift : "Select a shift"}
+                onChange={(value) => {
+                  setSelectedShift(value);
                 }}
-              >
-                <Box
-                  sx={{
-                    flex: "1.8",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-
-                    borderRight: `2px solid ${Colors.secondary}`,
-                    width: "100%",
-                    boxSizing: "border-box",
-                    overflowY: "auto",
-                    paddingTop: "15px",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      textDecoration: "underline",
-                      color: Colors.secondary,
-                    }}
-                    variant="h4"
-                  >
-                    Available employees for {date}
-                  </Typography>
-                  {employees.map((employee) => (
-                    <Box
-                      key={employee.employee_id}
-                      sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        width: "100%",
-                        padding: "8px 0px",
-                        borderBottom: `1px solid ${Colors.secondary}`,
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          flex: "0.2",
-                          display: "flex",
-                          flexDirection: "row",
-                        }}
-                      >
-                        <Typography variant="h6">
-                          {employee.shift[0]}
-                        </Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          flex: "1",
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "start",
-                        }}
-                      >
-                        <Typography variant="h6">
-                          {employee.employee_name}
-                        </Typography>
-                      </Box>
-                      <Box
-                        sx={{
-                          flex: "1.2",
-                          display: "flex",
-                          flexDirection: "row",
-                          gap: "10px",
-                        }}
-                      >
-                        {[
-                          employee.foreman && "Foreman",
-                          employee.crane && "Crane",
-                          employee.clerk && "Clerk",
-                          employee.fork && "Fork",
-                          employee.truck && "Truck",
-                        ]
-                          .filter(Boolean)
-                          .map((skill, index) => (
-                            <Typography key={index}>{skill}</Typography>
-                          ))}
-                      </Box>
-                      <Box
-                        sx={{
-                          flex: "1.8",
-                          display: "flex",
-                          flexDirection: "row",
-                          gap: "10px",
-                        }}
-                      >
-                        <SearchBar
-                          options={[
-                            employee.foreman && "Foreman",
-                            employee.crane && "Crane",
-                            employee.clerk && "Clerk",
-                            employee.fork && "Fork",
-                            employee.truck && "Truck",
-                          ].filter(Boolean)}
-                          width={"50%"}
-                          value={roleSelect[employee.employee_id] || "Role"}
-                          onChange={(value) => {
-                            selectedRoles(employee.employee_id, value);
-                          }}
-                        />
-                        <SearchBar
-                          options={Object.keys(teams)}
-                          width={"50%"}
-                          value={teamSelect[employee.employee_id] || "Team"}
-                          onChange={(value) => {
-                            selectedTeams(employee.employee_id, value);
-                          }}
-                        />
-                      </Box>
-                      <Box
-                        sx={{
-                          flex: "0.5",
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                          justifyContent: "space-around",
-                        }}
-                      >
-                        <DoneIcon
-                          sx={{
-                            backgroundColor:
-                              allocated.includes(employee.employee_id) &&
-                              Colors.secondary,
-                            height: "30px",
-                            width: "30px",
-                            borderRadius: "10px",
-                            "&:hover": {
-                              cursor: "pointer",
-                              color: "#41BC53",
-                            },
-                          }}
-                          onClick={async () => {
-                            await addEmployeeToTeam(
-                              employee.employee_id,
-                              teamSelect[employee.employee_id],
-                              roleSelect[employee.employee_id],
-                              date
-                            );
-                            fetchTeams(date);
-                            if (teamSelect[employee.employee_id])
-                              setAllocated([
-                                ...allocated,
-                                employee.employee_id,
-                              ]);
-                          }}
-                        />
-                      </Box>
-                    </Box>
-                  ))}
-                </Box>
-                <Box
-                  sx={{
-                    flex: "1",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-
-                    boxSizing: "border-box",
-                    overflowY: "auto",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                      gap: "30px",
-                      alignItems: "center",
-                    }}
-                  >
-                    <SearchBar
-                      options={["Day Shift", "Evening Shift", "Night Shift"]}
-                      width={"100%"}
-                      value={selectedShift ? selectedShift : "Select a shift"}
-                      onChange={(value) => {
-                        setSelectedShift(value);
-                      }}
-                    />
-                    <Buttons
-                      content={"Add Team"}
-                      color={Colors.content}
-                      onClick={() => {
-                        if (selectedShift) {
-                          addTeam(selectedShift);
-                        }
-                      }}
-                    />
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "20px",
-                      marginTop: "20px",
-                      width: "100%",
-                      alignItems: "center",
-                    }}
-                  >
-                    {Object.entries(teams).map(([team_id, employees]) => (
-                      <Box
-                        key={team_id}
-                        sx={{
-                          width: "70%",
-                          display: "flex",
-                          flexDirection: "column",
-                          backgroundColor: Colors.primary,
-                          color: Colors.secondary,
-                          borderRadius: "20px",
-                          padding: "20px",
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            gap: "5px",
-                            alignItems: "center",
-                            color: Colors.content,
-                            marginBottom: "5px",
-                          }}
-                        >
-                          <Typography sx={{}} variant="h5">
-                            {employees[0].shift}:
-                          </Typography>
-                          <Typography sx={{}} variant="h5">
-                            Team {team_id}
-                          </Typography>
-                        </Box>
-
-                        {employees[0].name === null ? (
-                          <Typography
-                            sx={{
-                              flex: "1",
-                              padding: "5px",
-                              textAlign: "center",
-                              color: "darkgray",
-                              fontStyle: "italic",
-                            }}
-                          >
-                            No employees added yet...
-                          </Typography>
-                        ) : (
-                          employees.map((employee) => (
-                            <Box
-                              sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "center",
-                              }}
-                            >
-                              <Typography
-                                sx={{
-                                  flex: "1",
-                                  padding: "5px",
-                                  textAlign: "end",
-                                  fontWeight: "bold",
-                                  color: "lightgray",
-                                }}
-                              >
-                                {employee.role}:
-                              </Typography>
-                              <Typography
-                                sx={{
-                                  flex: "1",
-                                  padding: "5px",
-                                  textAlign: "start",
-                                  fontWeight: "bold",
-                                  color: Colors.secondary,
-                                }}
-                              >
-                                {employee.name}
-                              </Typography>
-                            </Box>
-                          ))
-                        )}
-                      </Box>
-                    ))}
-                  </Box>
-                </Box>
-              </Box>
+              />
+              <Buttons
+                content={"Add Team"}
+                color={Colors.content}
+                onClick={() => {
+                  if (selectedShift) {
+                    addTeam(selectedShift);
+                  }
+                }}
+              />
             </Box>
+            {Object.entries(teams).map(([team_id, employees]) => (
+              <AllocationTeamDisplay team_id={team_id} employees={employees} />
+            ))}
           </Box>
-          <Box sx={{ marginBottom: "10px" }}>
-            <Buttons content={"Send Allocations"} />
-          </Box>
-        </>
+        </Box>
+
+        // <Box sx={{ marginBottom: "10px" }}>
+        //   <Buttons content={"Send Allocations"} />
+        // </Box>
       )}
     </Box>
   );

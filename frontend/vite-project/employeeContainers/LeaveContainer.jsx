@@ -4,65 +4,17 @@ import axios from "axios";
 import { Box, Typography } from "@mui/material";
 import { Colors } from "../src/assets/Colors";
 import Buttons from "../components/Buttons";
-import DateSelector from "../components/DateSelector";
-import DateRangeSelector from "../components/DateRangeSelector";
-import DropDownButton from "../components/DropDownButton";
-import SearchBar from "../components/Searchbar";
 import { UserContext } from "../context/UserContext";
+import LeaveRequestForm from "../components/LeaveRequestForm";
+import DropDownButton from "../components/DropDownButton";
+import dateToDMY from "../utilities/dateToDMY";
 
 const EmployeeLeaveContainer = () => {
   const [leaveBalances, setLeaveBalances] = useState([]);
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [submitLeaveRequest, setSubmitLeaveRequest] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [dateRange, setDateRange] = useState({});
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
-  const [leaveType, setLeaveType] = useState();
-  const [submitted, setSubmitted] = useState(null);
+  const [viewComment, setViewComment] = useState(null);
   const { userDetails } = useContext(UserContext);
-
-  const toggle = () => setOpen(!open);
-
-  useEffect(() => {
-    setStartDate(dateRange.startDate);
-    setEndDate(dateRange.endDate);
-  }, [dateRange]);
-
-  const submitRequest = () => {
-    const leaveRequestObject = {
-      employee_id: userDetails.employeeID,
-      leave_type: leaveType,
-      status: "Pending",
-      comment: null,
-      start_date: startDate,
-      end_date: endDate,
-    };
-
-    axios
-      .post("http://localhost:8081/lass/leave/request", leaveRequestObject)
-      .then((res) => {
-        if (res.status === 200) {
-          setLeaveType();
-          setStartDate();
-          setEndDate();
-          setSubmitted("Success");
-          setOpen(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err.error);
-        setSubmitted("Fail");
-      });
-  };
-
-  const leaveOptions = [
-    { type: "Annual Leave", query: "al_balance" },
-    { type: "Long Service Leave", query: "lsl_balance" },
-    { type: "Sick Leave", query: "sl_balance" },
-    { type: "Day In Lieu", query: "dil_balance" },
-    { type: "Maternity Leave", query: "ml_balance" },
-  ];
 
   useEffect(() => {
     axios
@@ -101,92 +53,22 @@ const EmployeeLeaveContainer = () => {
   };
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         gap: "15px",
       }}
     >
-      {submitted === "Success" && (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "20px",
-          }}
-        >
-          <Typography sx={{ color: Colors.secondary }} variant="h5">
-            Leave request successfully submitted!
-          </Typography>
-        </Box>
-      )}
-      {submitted === "Fail" && (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "20px",
-          }}
-        >
-          <Typography sx={{ color: "#F44C49" }} variant="h5">
-            Leave request failed, contact HR
-          </Typography>
-          <Buttons color={Colors.content} content={"Request Again"}></Buttons>
-          <Buttons color={Colors.content} content={"Home"}></Buttons>
-        </Box>
-      )}
       {submitLeaveRequest ? (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "15px",
-            alignItems: "center",
-          }}
-        >
-          {!leaveType && (
-            <SearchBar
-              width={"300px"}
-              value={"Select Leave Type..."}
-              options={leaveOptions.map((option) => option.type)}
-              onChange={(value) => {
-                setOpen(true);
-                setLeaveType(value);
-                setSubmitted(null);
-              }}
-            />
-          )}
-          {leaveType && <Typography variant="h6">{leaveType}</Typography>}
-          <DateRangeSelector
-            toggle={toggle}
-            open={open}
-            onChange={(range) => setDateRange(range)}
-          />
-          <Buttons
-            color={Colors.content}
-            content={"Submit"}
-            onClick={() => submitRequest()}
-          ></Buttons>
-          <Buttons
-            color={Colors.content}
-            content={"Cancel"}
-            onClick={() => {
-              setOpen(false);
-              setLeaveType();
-              setStartDate();
-              setEndDate();
-              setSubmitLeaveRequest(false);
-              setSubmitted(null);
-            }}
-          ></Buttons>
-        </div>
+        <LeaveRequestForm
+          submitLeaveRequest={submitLeaveRequest}
+          setSubmitLeaveRequest={setSubmitLeaveRequest}
+        />
       ) : (
-        <div
-          style={{
+        <Box
+          sx={{
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-around",
@@ -243,7 +125,14 @@ const EmployeeLeaveContainer = () => {
               display: "flex",
               flexDirection: "column",
               gap: "50px",
-              overflowY: "scroll",
+              overflowY: "auto",
+              "&::-webkit-scrollbar": {
+                width: "8px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(0,0,0,0.2)",
+                borderRadius: "10px",
+              },
             }}
           >
             <Typography
@@ -265,28 +154,68 @@ const EmployeeLeaveContainer = () => {
                     textAlign: "start",
                     display: "flex",
                     flexDirection: "row",
-                    justifyContent: "space-around",
+                    alignItems: "center",
                     borderRadius: "5px",
                     backgroundColor: colorScheme[request.status],
                     padding: "20px",
                   }}
                   key={request.leave_request_id}
                 >
-                  <Typography sx={{ fontWeight: "bold" }} variant="h6">
-                    {request.start_date}
+                  <Typography sx={{ flex: "1" }} variant="h6">
+                    {request.leave_type}
                   </Typography>
-                  <Typography sx={{ fontWeight: "bold" }} variant="h6">
-                    --
+                  <Typography
+                    sx={{ fontWeight: "bold", flex: "1.5" }}
+                    variant="h6"
+                  >
+                    {dateToDMY(request.start_date)} -{" "}
+                    {dateToDMY(request.end_date)}
                   </Typography>
-                  <Typography sx={{ fontWeight: "bold" }} variant="h6">
-                    {request.end_date}
-                  </Typography>
-                  <Typography variant="h6">{request.leave_type}</Typography>
+                  <Box sx={{ flex: "0.2", position: "relative" }}>
+                    <DropDownButton
+                      onClick={() =>
+                        setViewComment(
+                          viewComment === request.leave_request_id
+                            ? null
+                            : request.leave_request_id
+                        )
+                      }
+                    />
+                    {viewComment === request.leave_request_id && (
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: "40px",
+                          right: 0,
+                          backgroundColor: "white",
+                          border: `1px solid ${Colors.secondary}`,
+                          borderRadius: "4px",
+                          zIndex: 10,
+                          padding: "10px",
+                          minWidth: "200px",
+                        }}
+                      >
+                        <Typography variant="subtitle1" fontWeight="bold">
+                          Comment
+                        </Typography>
+                        <Typography>
+                          {request.comment || "No comment provided."}
+                        </Typography>
+                        <Buttons
+                          width="50%"
+                          height="30px"
+                          onClick={() => setViewComment(null)}
+                          content={"Close"}
+                          color={Colors.secondary}
+                        />
+                      </Box>
+                    )}
+                  </Box>
                 </Box>
               ))}
             </Box>
           </Box>
-        </div>
+        </Box>
       )}
       {!submitLeaveRequest && (
         <Buttons
@@ -295,7 +224,7 @@ const EmployeeLeaveContainer = () => {
           onClick={() => setSubmitLeaveRequest(true)}
         ></Buttons>
       )}
-    </div>
+    </Box>
   );
 };
 

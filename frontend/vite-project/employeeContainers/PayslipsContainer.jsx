@@ -5,6 +5,8 @@ import DropDownButton from "../components/DropDownButton";
 import { ColorLens } from "@mui/icons-material";
 import { Colors } from "../src/assets/Colors";
 import { UserContext } from "../context/UserContext";
+import ArrowBack from "../components/ArrowBack";
+import dateToDMY from "../utilities/dateToDMY";
 
 const EmployeePayslipsContainer = () => {
   const [selectedPayslip, setSelectedPayslip] = useState({});
@@ -69,10 +71,10 @@ const EmployeePayslipsContainer = () => {
               ${selectedPayslip.net}
             </Typography>
             <Typography sx={{}} variant="h4">
-              {selectedPayslip.pay_day}
+              {dateToDMY(selectedPayslip.pay_day)}
             </Typography>
 
-            <DropDownButton
+            <ArrowBack
               onClick={() => {
                 setSelectedPayslip({});
               }}
@@ -224,7 +226,7 @@ const EmployeePayslipsContainer = () => {
               ${payslip.net}
             </Typography>
             <Typography sx={{}} variant="h4">
-              {payslip.pay_day}
+              {dateToDMY(payslip.pay_day)}
             </Typography>
 
             <DropDownButton

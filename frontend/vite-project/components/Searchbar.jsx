@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Colors } from "../src/assets/Colors";
 
-const SearchBar = ({ value, onChange, options, label, width }) => {
+const SearchBar = ({ value, onChange, options, label, width, height }) => {
   return (
     <Autocomplete
       value={value}
