@@ -22,6 +22,10 @@ Employees.init(
       allowNull: false,
       unique: true,
     },
+    DOB: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
     contact_number: {
       type: DataTypes.STRING,
       allowNull: false,

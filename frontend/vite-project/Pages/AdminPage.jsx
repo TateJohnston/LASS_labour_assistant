@@ -37,24 +37,26 @@ const AdminPage = () => {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
+            padding: "5px",
           }}
         >
           <div
             style={{
               flex: "1",
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "end",
             }}
           >
             <Logo width="200px" />
           </div>
-          <Typography
-            variant="h2"
-            sx={{ color: Colors.primary, fontFamily: "sans-serif", flex: "1" }}
-          >
-            {userDetails.name}
-          </Typography>
+          <div style={{ flex: "1" }}>
+            <Typography
+              variant="h2"
+              sx={{ color: Colors.primary, fontFamily: "sans-serif" }}
+            >
+              {userDetails.name}
+            </Typography>
+          </div>
           <div
             style={{
               display: "flex",
@@ -62,7 +64,7 @@ const AdminPage = () => {
               gap: "10px",
               alignItems: "center",
               flex: "1",
-              justifyContent: "center",
+              justifyContent: "start",
             }}
           >
             <NotificationsIcon

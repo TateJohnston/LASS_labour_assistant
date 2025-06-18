@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import DropDownButton from "../components/DropDownButton";
 import LeaveRequestDetailsContainer from "./LeaveRequestDetailsContainer";
+import DialogueBox from "../components/DialogueBox";
+import dateToDMY from "../utilities/dateToDMY";
 
 const LeaveRequestContainer = () => {
   const [requests, setRequests] = useState([]);
@@ -17,6 +19,8 @@ const LeaveRequestContainer = () => {
   const [comment, setComment] = useState("");
   const [approvedLeave, setApprovedLeave] = useState(false);
   const [denyLeave, setDenyLeave] = useState(false);
+  const [openApproveDialogueBox, setOpenApproveDialogueBox] = useState(false);
+  const [openDenyDialogueBox, setOpenDenyDialogueBox] = useState(false);
 
   useEffect(() => {
     axios
@@ -57,7 +61,10 @@ const LeaveRequestContainer = () => {
   };
 
   useEffect(() => {
-    let filtered = requests;
+    let filtered = requests.sort(
+      (a, b) => b.leave_request_id - a.leave_request_id
+    );
+
     if (selectedEmployee) {
       filtered = filtered.filter(
         (request) => request.name === selectedEmployee
@@ -85,9 +92,6 @@ const LeaveRequestContainer = () => {
   };
 
   const approveRequest = async () => {
-    const confirm = await window.confirm("Approve Leave Request?");
-    if (!confirm) return;
-
     axios
       .put(`http://localhost:8081/lass/leave/requests/approve/`, {
         comment: comment,
@@ -106,9 +110,6 @@ const LeaveRequestContainer = () => {
       });
   };
   const denyRequest = async () => {
-    const confirm = await window.confirm("Deny Leave Request?");
-    if (!confirm) return;
-
     axios
       .put(
         `http://localhost:8081/lass/leave/requests/deny/${selectedRequest[0].leave_request_id}`,
@@ -146,10 +147,6 @@ const LeaveRequestContainer = () => {
             flexDirection: "column",
             width: "95%",
             gap: "20px",
-            marginTop: "10px",
-            overflowY: "auto",
-            paddingRight: "5px",
-            overflowX: "hidden",
           }}
         >
           <LeaveRequestDetailsContainer
@@ -166,10 +163,10 @@ const LeaveRequestContainer = () => {
             request={selectedRequest}
             status={selectedRequest[0].status}
             onClickApprove={() => {
-              approveRequest();
+              setOpenApproveDialogueBox(true);
             }}
             onClickDeny={() => {
-              denyRequest();
+              setOpenDenyDialogueBox(true);
             }}
             commentChange={(e) => {
               setComment(e.target.value);
@@ -189,6 +186,28 @@ const LeaveRequestContainer = () => {
                 ? Colors.error
                 : "black"
             }
+          />
+          <DialogueBox
+            open={openApproveDialogueBox}
+            onClose={() => setOpenApproveDialogueBox(false)}
+            confirmClick={() => {
+              approveRequest();
+              setOpenApproveDialogueBox(false);
+            }}
+            dialogueTitle={"Approve Leave Request?"}
+            cancelText={"Cancel"}
+            submitText={"Confirm"}
+          />
+          <DialogueBox
+            open={openDenyDialogueBox}
+            onClose={() => setOpenDenyDialogueBox(false)}
+            confirmClick={() => {
+              denyRequest();
+              setOpenDenyDialogueBox(false);
+            }}
+            dialogueTitle={"Deny Leave Request?"}
+            cancelText={"Cancel"}
+            submitText={"Confirm"}
           />
         </Box>
       ) : (
@@ -230,8 +249,14 @@ const LeaveRequestContainer = () => {
               gap: "20px",
               marginTop: "10px",
               overflowY: "auto",
+              "&::-webkit-scrollbar": {
+                width: "8px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(0,0,0,0.2)",
+                borderRadius: "10px",
+              },
               paddingRight: "5px",
-              overflowX: "hidden",
             }}
           >
             {filteredRequests.map((request) => (
@@ -255,7 +280,7 @@ const LeaveRequestContainer = () => {
                   variant="h5"
                   sx={{ fontStyle: "italic", flex: "1" }}
                 >
-                  {request.start_date}
+                  {dateToDMY(request.start_date)}
                 </Typography>
                 <Typography
                   variant="h5"
@@ -267,7 +292,7 @@ const LeaveRequestContainer = () => {
                   variant="h5"
                   sx={{ fontStyle: "italic", flex: "1" }}
                 >
-                  {request.end_date}
+                  {dateToDMY(request.end_date)}
                 </Typography>
 
                 <Typography variant="h5" sx={{ flex: "1", fontWeight: "bold" }}>

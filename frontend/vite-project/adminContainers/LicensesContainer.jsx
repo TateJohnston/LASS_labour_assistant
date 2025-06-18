@@ -5,6 +5,8 @@ import { Colors } from "../src/assets/Colors";
 import DateSelector from "../components/DateSelector";
 import InputFields from "../components/InputFields";
 import DoneIcon from "@mui/icons-material/Done";
+import convertDate from "../utilities/convertDate";
+import dateToDMY from "../utilities/dateToDMY";
 
 const LicensesContainer = () => {
   const [licenses, setLicenses] = useState([]);
@@ -124,11 +126,11 @@ const LicensesContainer = () => {
                   (duelicense) => duelicense.license_id === license.license_id
                 )
                   ? Colors.error
-                  : "black",
+                  : Colors.secondary,
               }}
               variant="h6"
             >
-              {new Date(license.expiry).toISOString().split("T")[0]}
+              {dateToDMY(new Date(license.expiry).toISOString().split("T")[0])}
             </Typography>
           </Box>
           <Box
@@ -144,16 +146,11 @@ const LicensesContainer = () => {
               label="Edit Expiry Date"
               onChange={(value) => {
                 const dateValue = value.$d;
-                const dateStr = new Date(dateValue.toString());
-                const year = dateStr.getFullYear();
-                const month = String(dateStr.getMonth() + 1).padStart(2, "0");
-                const day = String(dateStr.getDate()).padStart(2, "0");
-                const fullDate = `${year}-${month}-${day}`;
                 setChanges((prev) => ({
                   ...prev,
                   [license.license_id]: {
                     ...prev[license.license_id],
-                    expiry: fullDate,
+                    expiry: convertDate(dateValue),
                   },
                 }));
               }}

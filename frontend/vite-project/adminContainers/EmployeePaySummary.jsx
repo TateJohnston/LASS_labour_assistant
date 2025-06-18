@@ -9,18 +9,21 @@ import {
   TableRow,
   Paper,
   Box,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Button,
   Typography,
 } from "@mui/material";
 import calculateDayDifference from "../utilities/calculateDayDifference";
 import { Colors } from "../src/assets/Colors";
 import Buttons from "../components/Buttons";
-// import DialogueBox from "../components/DialogueBox";
+import DialogueBox from "../components/DialogueBox";
+import {
+  taxCalculator,
+  calculateGross,
+  calculateNet,
+  calculateSalary,
+  calculateSuper,
+  calculateUpgrades,
+} from "../utilities/payrollCalculator";
+import dateToDMY from "../utilities/dateToDMY";
 
 const EmployeePaySummary = ({
   employee_id,
@@ -35,6 +38,14 @@ const EmployeePaySummary = ({
   const [upgrades, setUpgrades] = useState(0);
   const [open, setOpen] = useState(false);
   const [payConfirmed, setPayconfirmed] = useState(false);
+
+  const dateDiff = calculateDayDifference(start_date, end_date);
+  const paySalary = calculateSalary(salary, dateDiff);
+  const payUpgrades = calculateUpgrades(upgrades);
+  const gross = calculateGross(bonusTotal, payUpgrades, paySalary);
+  const super_ = calculateSuper(gross);
+  const tax = taxCalculator(gross, dateDiff);
+  const net = calculateNet(gross, tax);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -55,73 +66,23 @@ const EmployeePaySummary = ({
     return { date, available, shift, role_worked, grade_worked, shift_bonus };
   };
 
-  const taxCalculator = (gross, dayDiff) => {
-    let tax = 0;
-    const expectedYearlySalary = gross * (365 / dayDiff);
-
-    if (expectedYearlySalary <= 18200) {
-      tax = 0;
-    } else if (expectedYearlySalary <= 45000) {
-      tax = 0.19 * (expectedYearlySalary - 18200);
-    } else if (expectedYearlySalary <= 120000) {
-      tax = 5092 + 0.325 * (expectedYearlySalary - 45000);
-    } else if (expectedYearlySalary <= 180000) {
-      tax = 29467 + 0.37 * (expectedYearlySalary - 120000);
-    } else {
-      tax = 51667 + 0.45 * (expectedYearlySalary - 180000);
-    }
-
-    const payTax = tax / (365 / dayDiff);
-    return payTax.toFixed(2);
-  };
-
   const confirmPayslip = () => {
-    handleClose();
-    setPayconfirmed(true);
     const reqBody = {
       employee_id: employee_id,
-      salary: (
-        (salary / 365) *
-        calculateDayDifference(start_date, end_date)
-      ).toFixed(2),
+      salary: paySalary,
       bonus: bonusTotal,
-      upgrades: (upgrades * (10000 / 260)).toFixed(2),
-      gross: (
-        bonusTotal +
-        upgrades +
-        (salary / 365) * calculateDayDifference(start_date, end_date)
-      ).toFixed(2),
-      tax: taxCalculator(
-        bonusTotal +
-          upgrades +
-          (salary / 365) * calculateDayDifference(start_date, end_date),
-        calculateDayDifference(start_date, end_date)
-      ),
-      net: (
-        bonusTotal +
-        upgrades +
-        (salary / 365) * calculateDayDifference(start_date, end_date) -
-        taxCalculator(
-          bonusTotal +
-            upgrades +
-            (salary / 365) * calculateDayDifference(start_date, end_date),
-          calculateDayDifference(start_date, end_date)
-        )
-      ).toFixed(2),
-      super: (
-        (bonusTotal +
-          upgrades +
-          (salary / 365) * calculateDayDifference(start_date, end_date)) *
-        0.12
-      ).toFixed(2),
+      upgrades: payUpgrades,
+      gross: gross,
+      tax: tax,
+      net: net,
+      super: super_,
       pay_day: payday,
       release: true,
     };
-
     axios
       .post(`http://localhost:8081/lass/payroll/create`, reqBody)
       .then((res) => {
-        console.log(res);
+        setPayconfirmed(true);
       })
       .catch((err) => {
         console.log(err);
@@ -178,7 +139,17 @@ const EmployeePaySummary = ({
         component={Paper}
       >
         <Table
-          sx={{ minWidth: 650, overflowY: "auto" }}
+          sx={{
+            minWidth: 650,
+            overflowY: "auto",
+            "&::-webkit-scrollbar": {
+              width: "8px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,0.2)",
+              borderRadius: "10px",
+            },
+          }}
           aria-label="Pay Summary Table"
         >
           <TableHead>
@@ -213,10 +184,10 @@ const EmployeePaySummary = ({
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.date}
+                  {dateToDMY(row.date)}
                 </TableCell>
                 <TableCell align="center">
-                  {row.available === null ? "On Leave" : "Available"}
+                  {row.available === 0 ? "Not Available" : "Available"}
                 </TableCell>
                 <TableCell align="center">{row.shift}</TableCell>
                 <TableCell align="center">
@@ -238,7 +209,6 @@ const EmployeePaySummary = ({
           padding: "10px",
           width: "300px",
           height: "fit-content",
-          overflow: "hidden",
           border: `3px solid ${Colors.secondary}`,
         }}
         component={Paper}
@@ -247,77 +217,32 @@ const EmployeePaySummary = ({
           <TableBody>
             <TableRow>
               <TableCell>Salary</TableCell>
-              <TableCell>
-                $
-                {(
-                  (salary / 365) *
-                  calculateDayDifference(start_date, end_date)
-                ).toFixed(2)}
-              </TableCell>
+              <TableCell>${paySalary.toFixed(2)}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Bonus</TableCell>
-              <TableCell>${bonusTotal}</TableCell>
+              <TableCell>${bonusTotal.toFixed(2)}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Upgrades</TableCell>
-              <TableCell>${(upgrades * (10000 / 260)).toFixed(2)}</TableCell>
+              <TableCell>${payUpgrades.toFixed(2)}</TableCell>
             </TableRow>
-
             <TableRow>
               <TableCell>Gross</TableCell>
-              <TableCell>
-                $
-                {(
-                  bonusTotal +
-                  upgrades +
-                  (salary / 365) * calculateDayDifference(start_date, end_date)
-                ).toFixed(2)}
-              </TableCell>
+              <TableCell>${gross.toFixed(2)}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Super</TableCell>
-              <TableCell>
-                $
-                {(
-                  (bonusTotal +
-                    upgrades +
-                    (salary / 365) *
-                      calculateDayDifference(start_date, end_date)) *
-                  0.12
-                ).toFixed(2)}
-              </TableCell>
+              <TableCell>${super_.toFixed(2)}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>Tax</TableCell>
-              <TableCell>
-                $
-                {taxCalculator(
-                  bonusTotal +
-                    upgrades +
-                    (salary / 365) *
-                      calculateDayDifference(start_date, end_date),
-                  calculateDayDifference(start_date, end_date)
-                )}
-              </TableCell>
+              <TableCell>${tax.toFixed(2)}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell sx={{ color: Colors.secondary }}>Net</TableCell>
               <TableCell sx={{ color: Colors.secondary }}>
-                $
-                {(
-                  bonusTotal +
-                  upgrades +
-                  (salary / 365) *
-                    calculateDayDifference(start_date, end_date) -
-                  taxCalculator(
-                    bonusTotal +
-                      upgrades +
-                      (salary / 365) *
-                        calculateDayDifference(start_date, end_date),
-                    calculateDayDifference(start_date, end_date)
-                  )
-                ).toFixed(2)}
+                ${net.toFixed(2)}
               </TableCell>
             </TableRow>
           </TableBody>
@@ -332,34 +257,19 @@ const EmployeePaySummary = ({
           ) : (
             <Typography sx={{ color: Colors.secondary }}>Paid</Typography>
           )}
-          <Dialog
+          <DialogueBox
             open={open}
             onClose={handleClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">
-              {`Confirm Payslip?`}
-            </DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                Are you sure you want to confirm employees payslip for {payday}?
-                This cannot be undone.
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Disagree</Button>
-              <Button
-                onClick={() => {
-                  confirmPayslip();
-                }}
-                autoFocus
-              >
-                Agree
-              </Button>
-            </DialogActions>
-          </Dialog>
-          {/* <DialogueBox  /> */}
+            dialogueTitle={`Confirm Payslip?`}
+            dialogueMessage={` Are you sure you want to confirm employees payslip for ${payday}?
+                This cannot be undone.`}
+            cancelText={"Disagree"}
+            submitText={"Agree"}
+            confirmClick={() => {
+              confirmPayslip();
+              handleClose();
+            }}
+          />
         </>
       </TableContainer>
     </Box>

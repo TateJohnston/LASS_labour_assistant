@@ -3,7 +3,7 @@ import ArrowBack from "../components/ArrowBack";
 import { Colors } from "../src/assets/Colors";
 import Buttons from "../components/Buttons";
 import InputFields from "../components/InputFields";
-import { useState } from "react";
+import dateToDMY from "../utilities/dateToDMY";
 
 const LeaveRequestDetailsContainer = ({
   name,
@@ -39,7 +39,13 @@ const LeaveRequestDetailsContainer = ({
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "15px",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -73,13 +79,11 @@ const LeaveRequestDetailsContainer = ({
             display: "flex",
             flexDirection: "column",
             gap: "10px",
-            marginTop: "30px",
-            paddingLeft: "20px",
           }}
         >
           {displayHandler("Status", status)}
-          {displayHandler("Start Date", startDate)}
-          {displayHandler("End Date", endDate)}
+          {displayHandler("Start Date", dateToDMY(startDate))}
+          {displayHandler("End Date", dateToDMY(endDate))}
           {displayHandler("Total Days Off", requestLength)}
           {displayHandler("al_Balance", alBalance)}
           {displayHandler("lsl_Balance", lslBalance)}
@@ -93,30 +97,26 @@ const LeaveRequestDetailsContainer = ({
               gap: "5px",
             }}
           >
-            <Box>
-              <InputFields
-                helperText
-                onChange={commentChange}
-                label={"Comment..."}
-                multiline
-                rows={"3"}
-                width={"100%"}
-              />
-            </Box>
-            <Box>
-              <Buttons
-                onClick={onClickApprove}
-                content={"Approve"}
-                backgroundColor={Colors.success}
-              />
-            </Box>
-            <Box>
-              <Buttons
-                onClick={onClickDeny}
-                content={"Deny"}
-                backgroundColor={Colors.error}
-              />
-            </Box>
+            <InputFields
+              helperText
+              onChange={commentChange}
+              label={"Comment..."}
+              multiline
+              rows={"3"}
+              width={"100%"}
+            />
+
+            <Buttons
+              onClick={onClickApprove}
+              content={"Approve"}
+              backgroundColor={Colors.success}
+            />
+
+            <Buttons
+              onClick={onClickDeny}
+              content={"Deny"}
+              backgroundColor={Colors.error}
+            />
           </div>
           <Typography
             variant="h4"
@@ -137,6 +137,15 @@ const LeaveRequestDetailsContainer = ({
             flexDirection: "column",
             alignItems: "center",
             gap: "10px",
+            maxHeight: "600px",
+            overflowY: "auto",
+            "&::-webkit-scrollbar": {
+              width: "8px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,0.2)",
+              borderRadius: "10px",
+            },
           }}
         >
           <Typography
@@ -167,7 +176,7 @@ const LeaveRequestDetailsContainer = ({
                   color: Colors.primary,
                 }}
               >
-                {dayOff.roster_date}
+                {dateToDMY(dayOff.roster_date)}
               </Typography>
               <Typography
                 sx={{
