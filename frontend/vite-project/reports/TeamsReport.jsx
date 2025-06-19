@@ -16,7 +16,7 @@ export const TeamsReport = () => {
   const productivityCalc = (bonus) => {
     // This is the same bonus calculation that my work uses
     const productivity = (bonus - 20) / 3 + 70;
-    return productivity;
+    return Math.floor(productivity);
   };
 
   const grouped = {};
