@@ -14,6 +14,7 @@ const rosterRoutes = require("./routes/rosterRoutes");
 const teamRoutes = require("./routes/teamRoutes");
 const payrollRoutes = require("./routes/payrollRoutes");
 const logInRoutes = require("./routes/logInRoutes");
+const reportRoutes = require("./routes/reportRoutes");
 
 app.use(cors());
 app.use(express.json());
@@ -30,6 +31,7 @@ app.use("/lass/rosters", rosterRoutes);
 app.use("/lass/teams", teamRoutes);
 app.use("/lass/payroll", payrollRoutes);
 app.use("/lass/logIn", logInRoutes);
+app.use("/lass/reports", reportRoutes);
 
 const PORT = process.env.PORT || 8080;
 
