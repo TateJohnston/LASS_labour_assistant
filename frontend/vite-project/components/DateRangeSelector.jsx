@@ -1,21 +1,28 @@
 import React, { useState } from "react";
 import { DateRange } from "react-date-range";
-import { addDays } from "date-fns";
+import { addDays, isAfter } from "date-fns";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 
 const DateRangeSelector = ({ onChange, open, toggle }) => {
   const [range, setRange] = useState([
     {
-      startDate: new Date(),
-      endDate: addDays(new Date(), 7),
+      startDate: undefined,
+      endDate: undefined,
       key: "selection",
     },
   ]);
 
   const handleSelect = (ranges) => {
-    setRange([ranges.selection]);
-    onChange(ranges.selection);
+    const selected = ranges.selection;
+    setRange([selected]);
+    if (
+      selected.startDate &&
+      selected.endDate &&
+      isAfter(selected.endDate, selected.startDate)
+    ) {
+      onChange(selected);
+    }
   };
 
   if (!open) return null;

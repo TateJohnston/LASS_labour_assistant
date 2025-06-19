@@ -2,15 +2,18 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Colors } from "../src/assets/Colors";
+import { FormControl } from "@mui/material";
 
-const SearchBar = ({ value, onChange, options, label, width, height }) => {
+const SearchBar = ({ value, onChange, options, label, width, disabled }) => {
   return (
     <Autocomplete
+      disabled={disabled}
       value={value}
       onChange={(event, newValue) => onChange(newValue)}
       disablePortal
       options={options}
       sx={{
+        borderRadius: "5px",
         backgroundColor: "white",
         width,
         "& .MuiOutlinedInput-root": {

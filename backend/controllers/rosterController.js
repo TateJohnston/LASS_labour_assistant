@@ -29,42 +29,6 @@ WHERE e.employee_id = ${employeeID}`;
     });
 };
 
-// const changeRoster = (req, res) => {
-//   const date = req.params.date;
-//   const employeeID = req.params.employeeID;
-//   const data = req.body;
-
-//   Models.Rosters.findOne({
-//     where: {
-//       employee_id: employeeID,
-//       date: date,
-//     },
-//   }).then((data) => {
-//     console.log({ employee_id: employeeID, date: date });
-//     console.log(data);
-//   });
-//   Models.Rosters.update(data, {
-//     where: {
-//       employee_id: employeeID,
-//       date: date,
-//     },
-//   })
-//     .then((data) => {
-//       if (data[0] > 0) {
-//         res.send({
-//           result: 200,
-//           message: "Roster successfully Changed",
-//           data: data,
-//         });
-//       } else {
-//         res.send({ message: "No changes were made" });
-//       }
-//     })
-//     .catch((err) => {
-//       res.status(500).send({ result: 500, error: err.message });
-//     });
-// };
-
 module.exports = {
   getRoster,
 };

@@ -17,176 +17,177 @@ import TeamsContainer from "../adminContainers/TeamsContainer";
 import PayrollContainer from "../adminContainers/PayrollContainer";
 import DropdownMenu from "../components/DropdownMenu";
 import { UserContext } from "../context/UserContext";
+import ReportsContainer from "../adminContainers/ReportsContainer";
 
 const AdminPage = () => {
   const [content, setContent] = useState("Home");
   const { userDetails } = useContext(UserContext);
 
-  if (Object.entries(userDetails).length > 0) {
-    return (
+  // if (Object.entries(userDetails).length > 0) {
+  return (
+    <div
+      style={{
+        height: "100vh",
+        width: "100%",
+      }}
+    >
       <div
         style={{
-          height: "100vh",
-          width: "100%",
+          width: "100vw",
+          height: "75px",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          padding: "5px",
         }}
       >
         <div
           style={{
-            width: "100vw",
-            height: "75px",
+            flex: "1",
             display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            padding: "5px",
+            justifyContent: "end",
           }}
         >
-          <div
-            style={{
-              flex: "1",
-              display: "flex",
-              justifyContent: "end",
-            }}
-          >
-            <Logo width="200px" />
-          </div>
-          <div style={{ flex: "1" }}>
-            <Typography
-              variant="h2"
-              sx={{ color: Colors.primary, fontFamily: "sans-serif" }}
-            >
-              {userDetails.name}
-            </Typography>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: "10px",
-              alignItems: "center",
-              flex: "1",
-              justifyContent: "start",
-            }}
-          >
-            <NotificationsIcon
-              onClick={() => {
-                console.log("works");
-              }}
-              sx={{
-                height: "40px",
-                width: "40px",
-                "&:hover": {
-                  cursor: "pointer",
-                  transition: "transform ease 0.3s",
-                  transform: "scale(1.05)",
-                },
-              }}
-            />
-            <Avatar
-              sx={{
-                bgcolor: Colors.primary,
-                color: Colors.secondary,
-                height: "60px",
-                width: "60px",
-                fontSize: "xx-large",
-              }}
-            >
-              {userDetails.name[0]}
-            </Avatar>
-          </div>
+          <Logo width="200px" />
         </div>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "30px",
-            padding: "10px",
-            borderBottom: "2px solid #1CA89E",
-          }}
-        >
-          {/* <DropdownMenu /> */}
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Home"}
-            onClick={() => setContent("Home")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Allocations"}
-            onClick={() => setContent("Allocations")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Employees"}
-            onClick={() => setContent("Employees")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Leave Requests"}
-            onClick={() => setContent("Leave Requests")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Licenses"}
-            onClick={() => setContent("Licenses")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Reports"}
-            onClick={() => setContent("Reports")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Teams"}
-            onClick={() => setContent("Teams")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Payroll"}
-            onClick={() => setContent("Payroll")}
-          />
-        </Box>
+        <div style={{ flex: "1" }}>
+          <Typography
+            variant="h2"
+            sx={{ color: Colors.primary, fontFamily: "sans-serif" }}
+          >
+            {/* {userDetails.name} */}
+          </Typography>
+        </div>
         <div
           style={{
-            backgroundColor: Colors.primary,
-            height: "100%",
             display: "flex",
-            flexDirection: "column",
+            flexDirection: "row",
+            gap: "10px",
+            alignItems: "center",
+            flex: "1",
+            justifyContent: "start",
           }}
         >
-          <Box
+          <NotificationsIcon
+            onClick={() => {
+              console.log("works");
+            }}
             sx={{
-              height: "100%",
-              backgroundColor: Colors.primary,
-              display: "flex",
-              marginTop: "25px",
-              justifyContent: "center",
-              paddingTop: "0",
+              height: "40px",
+              width: "40px",
+              "&:hover": {
+                cursor: "pointer",
+                transition: "transform ease 0.3s",
+                transform: "scale(1.05)",
+              },
+            }}
+          />
+          <Avatar
+            sx={{
+              bgcolor: Colors.primary,
+              color: Colors.secondary,
+              height: "60px",
+              width: "60px",
+              fontSize: "xx-large",
             }}
           >
-            {content === "Home" && <HomeContainer />}
-            {content === "Allocations" && <AllocationsContainer />}
-            {content === "Employees" && <EmployeesContainer />}
-            {content === "Leave Requests" && <LeaveRequestContainer />}
-            {content === "Licenses" && <LicensesContainer />}
-            {content === "Teams" && <TeamsContainer />}
-            {content === "Payroll" && <PayrollContainer />}
-          </Box>
+            {/* {userDetails.name[0]} */}
+          </Avatar>
         </div>
       </div>
-    );
-  } else {
-    return "Loading...";
-  }
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "30px",
+          padding: "10px",
+          borderBottom: "2px solid #1CA89E",
+        }}
+      >
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Home"}
+          onClick={() => setContent("Home")}
+        />
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Allocations"}
+          onClick={() => setContent("Allocations")}
+        />
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Employees"}
+          onClick={() => setContent("Employees")}
+        />
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Leave Requests"}
+          onClick={() => setContent("Leave Requests")}
+        />
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Licenses"}
+          onClick={() => setContent("Licenses")}
+        />
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Reports"}
+          onClick={() => setContent("Reports")}
+        />
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Teams"}
+          onClick={() => setContent("Teams")}
+        />
+        <Buttons
+          width="150px"
+          color={Colors.content}
+          content={"Payroll"}
+          onClick={() => setContent("Payroll")}
+        />
+      </Box>
+      <div
+        style={{
+          backgroundColor: Colors.primary,
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Box
+          sx={{
+            height: "100%",
+            backgroundColor: Colors.primary,
+            display: "flex",
+            marginTop: "25px",
+            justifyContent: "center",
+            paddingTop: "0",
+          }}
+        >
+          {content === "Home" && <HomeContainer />}
+          {content === "Allocations" && <AllocationsContainer />}
+          {content === "Employees" && <EmployeesContainer />}
+          {content === "Leave Requests" && <LeaveRequestContainer />}
+          {content === "Licenses" && <LicensesContainer />}
+          {content === "Teams" && <TeamsContainer />}
+          {content === "Reports" && <ReportsContainer />}
+          {content === "Payroll" && <PayrollContainer />}
+        </Box>
+      </div>
+    </div>
+  );
+  // } else {
+  //   return "Loading...";
+  // }
 };
 
 export default AdminPage;
