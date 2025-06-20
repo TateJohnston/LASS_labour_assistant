@@ -9,6 +9,7 @@ import AvailableEmployee from "../components/AvailableEmployees";
 import EmployeeShiftAllocation from "../components/EmployeeShiftAllocation";
 import AllocationTeamDisplay from "../components/AllocationTeamDisplay";
 import dateToDMY from "../utilities/dateToDMY";
+import DialogueBox from "../components/DialogueBox";
 
 const AllocationsContainer = () => {
   const [date, setDate] = useState("");
@@ -18,6 +19,8 @@ const AllocationsContainer = () => {
   const [teamSelect, setTeamSelect] = useState({});
   const [roleSelect, setRoleSelect] = useState({});
   const [selectedShift, setSelectedShift] = useState("");
+  const [allocationConfirmBox, setAllocationConfirmBox] = useState(false);
+  const [allocationsSent, setAllocationsSent] = useState(false);
 
   const shiftsMap = { "Night Shift": 1, "Day Shift": 2, "Evening Shift": 3 };
 
@@ -34,7 +37,7 @@ const AllocationsContainer = () => {
 
   const fetchEmployees = (fullDate) => {
     axios
-      .get(`http://localhost:8081/lass/allocations/${fullDate}`)
+      .get(`http://localhost:8081/lass/allocations/?date=${fullDate}`)
       .then((res) => {
         setEmployees([]);
         const data = res.data.data;
@@ -93,6 +96,27 @@ const AllocationsContainer = () => {
           setSelectedShift("");
           fetchTeams(date);
         }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const sendAllocations = () => {
+    // I would've made this dynamic so that it sends allocations to everyone however the free trial has a limit on 5 numbers it can be sent to, also theres a credit limit.
+    const body = {
+      employeeID: 1,
+      name: "Tate Johnston",
+      role: "Foreman",
+      date: date,
+      shift: "Dayshift",
+      number: "+61468589981",
+    };
+
+    axios
+      .post(`http://localhost:8081/lass/allocations/send-allocations`, body)
+      .then((res) => {
+        if (res.status === 200) setAllocationsSent(true);
       })
       .catch((err) => {
         console.log(err);
@@ -160,6 +184,7 @@ const AllocationsContainer = () => {
             </Typography>
             {employees.map((employee) => (
               <Box
+                key={employee.employee_id}
                 sx={{
                   display: "flex",
                   flexDirection: "row",
@@ -238,12 +263,38 @@ const AllocationsContainer = () => {
             {Object.entries(teams).map(([team_id, employees]) => (
               <AllocationTeamDisplay team_id={team_id} employees={employees} />
             ))}
+            {Object.entries(teams).length > 0 && (
+              <>
+                <Box sx={{ marginBottom: "10px" }}>
+                  {!allocationsSent ? (
+                    <Buttons
+                      onClick={() => setAllocationConfirmBox(true)}
+                      content={"Send Allocations"}
+                    />
+                  ) : (
+                    <Typography variant="h5" sx={{ color: Colors.success }}>
+                      Allocations Sent!
+                    </Typography>
+                  )}
+                </Box>
+                <DialogueBox
+                  open={allocationConfirmBox}
+                  onClose={() => setAllocationConfirmBox(false)}
+                  dialogueTitle={"Send Allocations?"}
+                  dialogueMessage={`Are you sure you want to Send allocations for ${dateToDMY(
+                    date
+                  )}`}
+                  cancelText={"Cancel"}
+                  submitText={"Send"}
+                  confirmClick={() => {
+                    sendAllocations();
+                    setAllocationConfirmBox(false);
+                  }}
+                />
+              </>
+            )}
           </Box>
         </Box>
-
-        // <Box sx={{ marginBottom: "10px" }}>
-        //   <Buttons content={"Send Allocations"} />
-        // </Box>
       )}
     </Box>
   );

@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { Colors } from "../src/assets/Colors";
+import Buttons from "./Buttons";
 
 const AllocationTeamsDisplay = ({ team_id, employees }) => {
   return (
