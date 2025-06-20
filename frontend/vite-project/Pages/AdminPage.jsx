@@ -1,7 +1,7 @@
-import { Typography, Avatar, Box } from "@mui/material";
+import { Typography, Avatar, Box, Paper } from "@mui/material";
 import Logo from "../components/Logo";
 import { Colors } from "../src/assets/Colors";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import { useEffect } from "react";
 import { useContext, useState } from "react";
 import Buttons from "../components/Buttons";
 import HomeContainer from "../adminContainers/HomeContainer";
@@ -16,7 +16,8 @@ import ReportsContainer from "../adminContainers/ReportsContainer";
 
 const AdminPage = () => {
   const [content, setContent] = useState("Home");
-  const { userDetails } = useContext(UserContext);
+  const { userDetails, setSuccessfulLogin } = useContext(UserContext);
+  const [openSignoutForm, setOpenSignoutForm] = useState(false);
 
   if (Object.entries(userDetails).length > 0) {
     return (
@@ -55,20 +56,32 @@ const AdminPage = () => {
           <Buttons
             width="150px"
             color={Colors.content}
-            content={"Allocations"}
-            onClick={() => setContent("Allocations")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Employees"}
-            onClick={() => setContent("Employees")}
+            content={"Teams"}
+            onClick={() => setContent("Teams")}
           />
           <Buttons
             width="150px"
             color={Colors.content}
             content={"Leave Requests"}
             onClick={() => setContent("Leave Requests")}
+          />
+          <Buttons
+            width="150px"
+            color={Colors.content}
+            content={"Allocations"}
+            onClick={() => setContent("Allocations")}
+          />
+          <Buttons
+            width="150px"
+            color={Colors.content}
+            content={"Payroll"}
+            onClick={() => setContent("Payroll")}
+          />
+          <Buttons
+            width="150px"
+            color={Colors.content}
+            content={"Employees"}
+            onClick={() => setContent("Employees")}
           />
           <Buttons
             width="150px"
@@ -82,18 +95,6 @@ const AdminPage = () => {
             content={"Reports"}
             onClick={() => setContent("Reports")}
           />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Teams"}
-            onClick={() => setContent("Teams")}
-          />
-          <Buttons
-            width="150px"
-            color={Colors.content}
-            content={"Payroll"}
-            onClick={() => setContent("Payroll")}
-          />
           <div
             style={{
               display: "flex",
@@ -104,31 +105,57 @@ const AdminPage = () => {
               justifyContent: "start",
             }}
           >
-            <NotificationsIcon
-              onClick={() => {
-                console.log("works");
-              }}
-              sx={{
-                height: "40px",
-                width: "40px",
-                "&:hover": {
-                  cursor: "pointer",
-                  transition: "transform ease 0.3s",
-                  transform: "scale(1.05)",
-                },
-              }}
-            />
-            <Avatar
-              sx={{
-                bgcolor: Colors.primary,
-                color: Colors.secondary,
-                height: "60px",
-                width: "60px",
-                fontSize: "xx-large",
-              }}
-            >
-              {userDetails.name[0]}
-            </Avatar>
+            <Box sx={{ position: "relative" }}>
+              <Avatar
+                onClick={() => setOpenSignoutForm((prev) => !prev)}
+                sx={{
+                  border: `2px solid ${Colors.primary}`,
+                  bgcolor: Colors.primary,
+                  color: Colors.secondary,
+                  height: "60px",
+                  width: "60px",
+                  fontSize: "xx-large",
+                  "&:hover": {
+                    cursor: "pointer",
+                    transition: "transform ease 0.3s",
+                    transform: "scale(1.05)",
+                  },
+                }}
+              >
+                {userDetails.name[0]}
+              </Avatar>
+              {openSignoutForm && (
+                <Paper
+                  sx={{
+                    backgroundColor: Colors.secondary,
+                    color: "white",
+                    height: "fit-content",
+                    width: "100px",
+                    position: "absolute",
+                    top: "65px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    zIndex: 10,
+                    p: 1,
+                    cursor: "pointer",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      "&:hover": {
+                        cursor: "pointer",
+                        transition: "transform ease 0.3s",
+                        transform: "scale(1.05)",
+                        color: Colors.primary,
+                      },
+                    }}
+                    onClick={() => setSuccessfulLogin(false)}
+                  >
+                    Sign Out
+                  </Typography>
+                </Paper>
+              )}
+            </Box>
           </div>
         </Box>
 

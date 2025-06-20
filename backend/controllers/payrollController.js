@@ -61,17 +61,21 @@ const confirmPayslip = (req, res) => {
 };
 
 const checkIfPayslipCompleted = (req, res) => {
-  const payday = req.query.payday;
+  const start_date = req.params.startDate;
+  const end_date = req.params.endDate;
   Models.Payslips.findAll({
     where: {
-      pay_day: payday,
+      pay_period_start_date: start_date,
+      pay_period_end_date: end_date,
     },
   })
     .then((data) => {
       res.send({ result: 200, data: data });
     })
     .catch((err) => {
-      res.status(500).send({ result: 500, error: err.message });
+      res
+        .status(500)
+        .send({ result: 500, error: err.message, start_date, end_date });
     });
 };
 

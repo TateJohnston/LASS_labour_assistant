@@ -1,4 +1,4 @@
-import { Typography, Avatar, Box } from "@mui/material";
+import { Typography, Avatar, Box, Paper } from "@mui/material";
 import Logo from "../components/Logo";
 import { Colors } from "../src/assets/Colors";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -12,7 +12,8 @@ import { UserContext } from "../context/UserContext";
 
 const EmployeePage = () => {
   const [content, setContent] = useState("Roster");
-  const { userDetails } = useContext(UserContext);
+  const { userDetails, setSuccessfulLogin } = useContext(UserContext);
+  const [openSignoutForm, setOpenSignoutForm] = useState(false);
 
   if (Object.entries(userDetails).length > 0) {
     return (
@@ -29,68 +30,20 @@ const EmployeePage = () => {
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "space-evenly",
             borderBottom: "2px solid #1CA89E",
           }}
         >
-          <Logo width="200px" />
-          <Typography
-            variant="h2"
-            sx={{ color: Colors.primary, fontFamily: "sans-serif" }}
-          >
-            {userDetails.name}
-          </Typography>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: "10px",
-              alignItems: "center",
-            }}
-          >
-            <NotificationsIcon
-              onClick={() => {
-                console.log("works");
-              }}
-              sx={{
-                height: "40px",
-                width: "40px",
-                "&:hover": {
-                  cursor: "pointer",
-                  transition: "transform ease 0.3s",
-                  transform: "scale(1.05)",
-                },
-              }}
-            />
-            <Avatar
-              sx={{
-                bgcolor: Colors.primary,
-                color: Colors.secondary,
-                height: "60px",
-                width: "60px",
-                fontSize: "xx-large",
-              }}
-            >
-              {userDetails.name[0]}
-            </Avatar>
+          <div style={{ flex: "1" }}>
+            <Logo width="150px" />
           </div>
-        </div>
-        <div
-          style={{
-            backgroundColor: Colors.primary,
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
           <Box
             sx={{
+              flex: "1",
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
               gap: "30px",
-              paddingTop: "20px",
             }}
           >
             <Buttons
@@ -112,6 +65,65 @@ const EmployeePage = () => {
               onClick={() => setContent("Payslips")}
             />
           </Box>
+          <div
+            style={{
+              flex: "1",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Box sx={{ position: "relative" }}>
+              <Avatar
+                onClick={() => setOpenSignoutForm((prev) => !prev)}
+                sx={{
+                  bgcolor: Colors.primary,
+                  color: Colors.secondary,
+                  height: "60px",
+                  width: "60px",
+                  fontSize: "xx-large",
+                  "&:hover": {
+                    cursor: "pointer",
+                    transition: "transform ease 0.3s",
+                    transform: "scale(1.05)",
+                  },
+                }}
+              >
+                {userDetails.name[0]}
+              </Avatar>
+              {openSignoutForm && (
+                <Paper
+                  onClick={() => setSuccessfulLogin(false)}
+                  sx={{
+                    backgroundColor: Colors.secondary,
+                    color: "white",
+                    height: "fit-content",
+                    width: "100px",
+                    position: "absolute",
+                    top: "60px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    zIndex: 10,
+                    p: 1,
+                    cursor: "pointer",
+                  }}
+                >
+                  Sign Out
+                </Paper>
+              )}
+            </Box>
+          </div>
+        </div>
+        <div
+          style={{
+            backgroundColor: Colors.primary,
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
           <Box
             sx={{
               height: "100%",

@@ -15,15 +15,7 @@ const EmployeesContainer = () => {
   const [showEmployeeDetails, setShowEmployeeDetails] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8081/lass/employees/")
-      .then((res) => {
-        let data = res.data.data;
-        setEmployees(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    fetchEmployees();
   }, []);
 
   useEffect(() => {
@@ -35,6 +27,18 @@ const EmployeesContainer = () => {
     }
     setFilteredEmployees(filtered);
   }, [selectedEmployee, employees]);
+
+  const fetchEmployees = () => {
+    axios
+      .get("http://localhost:8081/lass/employees/")
+      .then((res) => {
+        let data = res.data.data;
+        setEmployees(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <Box
@@ -67,6 +71,7 @@ const EmployeesContainer = () => {
             onClick={() => {
               setShowEmployeeDetails("");
               setSelectedEmployee("");
+              fetchEmployees();
             }}
           />
         )}

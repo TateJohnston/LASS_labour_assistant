@@ -6,7 +6,7 @@ router.get("/:startDate/:endDate", (req, res) => {
   payrollController.payableTimeSummary(req, res);
 });
 
-router.get("/:employeeID/:startDate/:endDate", (req, res) => {
+router.get("/summary/:employeeID/:startDate/:endDate", (req, res) => {
   payrollController.getEmployeePaySummary(req, res);
 });
 
@@ -14,7 +14,7 @@ router.post("/create", (req, res) => {
   payrollController.confirmPayslip(req, res);
 });
 
-router.get("/completed", (req, res) => {
+router.get("/completed/:startDate/:endDate", (req, res) => {
   payrollController.checkIfPayslipCompleted(req, res);
 });
 

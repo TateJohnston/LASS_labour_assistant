@@ -10,6 +10,7 @@ import SearchBar from "../components/Searchbar";
 import EmployeePaySummary from "./EmployeePaySummary";
 import ArrowBack from "../components/ArrowBack";
 import DateSelector from "../components/DateSelector";
+import calculateDayDifference from "../utilities/calculateDayDifference";
 
 const PayrollContainer = () => {
   const [open, setOpen] = useState(false);
@@ -28,24 +29,6 @@ const PayrollContainer = () => {
   let selectedEmployeeName = employees.find(
     (employee) => employee.employee_id === selectedEmployeeSummaryID
   );
-
-  const fetchCompletedPayslips = () => {
-    if (!payday) return;
-    axios
-      .get(`http://localhost:8081/lass/payroll/completed?payday=${payday}`)
-      .then((res) => {
-        const data = res.data.data;
-        const employeeIDs = data.map((payslip) => payslip.employee_id);
-        setCompletedPayslips(employeeIDs);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    fetchCompletedPayslips();
-  }, [payday]);
 
   useEffect(() => {
     axios
@@ -73,6 +56,27 @@ const PayrollContainer = () => {
     setSelectedEmployeeSummaryID(employeeID);
   };
 
+  const fetchCompletedPayslips = (start_date, end_date) => {
+    setStartDate(convertDate(start_date));
+    setEndDate(convertDate(end_date));
+    if (!dateRange) return;
+    axios
+      .get(
+        `http://localhost:8081/lass/payroll/completed/${convertDate(
+          start_date
+        )}/${convertDate(end_date)}`
+      )
+      .then((res) => {
+        const data = res.data.data;
+        console.log(data);
+        const employeeIDs = data.map((payslip) => payslip.employee_id);
+        setCompletedPayslips(employeeIDs);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <Box
       sx={{
@@ -90,17 +94,31 @@ const PayrollContainer = () => {
           alignItems: "center",
         }}
       >
-        <Buttons
-          fontSize={Object.entries(dateRange).length > 0 && "large"}
-          content={
-            Object.entries(dateRange).length > 0
-              ? `${startDate} - ${endDate}`
-              : "Select Date Range"
-          }
-          onClick={() => {
-            setOpen(true);
-          }}
-        />
+        <Box sx={{ position: "relative" }}>
+          <Buttons
+            fontSize={Object.entries(dateRange).length > 0 && "large"}
+            content={
+              Object.entries(dateRange).length > 0
+                ? `${startDate} - ${endDate}`
+                : "Select Pay Period"
+            }
+            onClick={() => {
+              setOpen((prev) => !prev);
+            }}
+          />
+          <DateRangeSelector
+            toggle={toggle}
+            open={open}
+            onChange={(range) => {
+              setDateRange({
+                startDate: range.startDate,
+                endDate: range.endDate,
+              });
+              setOpen(false);
+              fetchCompletedPayslips(range.startDate, range.endDate);
+            }}
+          />
+        </Box>
         <DateSelector
           label="Select Payday"
           height={"50px"}
@@ -111,84 +129,94 @@ const PayrollContainer = () => {
           }}
         />
       </Box>
-      <DateRangeSelector
-        toggle={toggle}
-        open={open}
-        onChange={(range) => {
-          setStartDate(convertDate(range.startDate));
-          setEndDate(convertDate(range.endDate));
-          setDateRange({ startDate: range.startDate, endDate: range.endDate });
-          setOpen(false);
-        }}
-      />
 
       {Object.entries(dateRange).length > 0 && !selectedEmployeeSummaryID ? (
-        <Box
-          sx={{
-            width: "900px",
-            height: "700px",
-            backgroundColor: "white",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            borderRadius: "5px",
-            border: `2px solid ${Colors.secondary}`,
-            boxSizing: "border-box",
-            padding: "10px 0px",
-            overflowY: "auto",
-            gap: "10px",
-            overflowX: "hidden",
-          }}
-        >
-          <>
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <SearchBar
-                width={"400px"}
-                options={employees.map((employee) => employee.employee_name)}
-                value={selectedEmployee ? selectedEmployee : "Search..."}
-                onChange={(value) => {
-                  setSelectedEmployee(value);
-                }}
-              />
-            </Box>
-            {filteredEmployees.map((employee) => (
+        calculateDayDifference(startDate, endDate) === 14 ? (
+          <Box
+            sx={{
+              width: "900px",
+              height: "700px",
+              backgroundColor: "white",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              borderRadius: "5px",
+              border: `2px solid ${Colors.secondary}`,
+              boxSizing: "border-box",
+              padding: "10px 0px",
+              overflowY: "auto",
+              "&::-webkit-scrollbar": {
+                width: "8px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(0,0,0,0.2)",
+                borderRadius: "10px",
+              },
+              gap: "10px",
+              overflowX: "hidden",
+            }}
+          >
+            <>
               <Box
-                key={employee.employee_id}
                 sx={{
-                  borderBottom: `2px solid ${Colors.secondary}`,
-                  display: "flex",
-                  flexDirection: "row",
                   width: "100%",
-                  padding: "10px",
+                  display: "flex",
+                  justifyContent: "center",
                   alignItems: "center",
-                  backgroundColor: completedPayslips.some(
-                    (id) => id === employee.employee_id
-                  )
-                    ? Colors.success
-                    : Colors.warning,
                 }}
               >
-                <Typography flex={"1"} variant="h5" sx={{ fontWeight: "bold" }}>
-                  {employee.employee_name}
-                </Typography>
-                <Typography flex={"1"} variant="h5" sx={{}}>
-                  {employee.main_role}
-                </Typography>
-                <DropdownButton
-                  onClick={() => openEmployeeSummary(employee.employee_id)}
-                  flex={"0.5"}
+                <SearchBar
+                  width={"400px"}
+                  options={employees.map((employee) => employee.employee_name)}
+                  value={selectedEmployee ? selectedEmployee : "Search..."}
+                  onChange={(value) => {
+                    setSelectedEmployee(value);
+                  }}
                 />
               </Box>
-            ))}
-          </>
-        </Box>
+              {filteredEmployees.map((employee) => (
+                <Box
+                  key={employee.employee_id}
+                  sx={{
+                    borderBottom: `2px solid ${Colors.secondary}`,
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "100%",
+                    padding: "10px",
+                    alignItems: "center",
+                    backgroundColor: completedPayslips.some(
+                      (id) => id === employee.employee_id
+                    )
+                      ? Colors.success
+                      : Colors.warning,
+                  }}
+                >
+                  <Typography
+                    flex={"1"}
+                    variant="h5"
+                    sx={{ fontWeight: "bold" }}
+                  >
+                    {employee.employee_name}
+                  </Typography>
+                  <Typography flex={"1"} variant="h5" sx={{}}>
+                    {employee.main_role}
+                  </Typography>
+                  <DropdownButton
+                    onClick={() => openEmployeeSummary(employee.employee_id)}
+                    flex={"0.5"}
+                  />
+                </Box>
+              ))}
+            </>
+          </Box>
+        ) : (
+          <Typography
+            variant="h6"
+            sx={{ color: Colors.error, marginTop: "15px" }}
+          >
+            Selected Pay Period does meet 14 day requirement
+          </Typography>
+        )
       ) : (
         <>
           {selectedEmployeeName && selectedEmployeeSummaryID && (
@@ -202,7 +230,7 @@ const PayrollContainer = () => {
                 </Typography>
                 <ArrowBack
                   onClick={() => {
-                    fetchCompletedPayslips();
+                    fetchCompletedPayslips(startDate, endDate);
                     selectedEmployeeName = "";
                     setSelectedEmployeeSummaryID(0);
                   }}

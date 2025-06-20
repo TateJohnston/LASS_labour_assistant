@@ -12,8 +12,7 @@ import {
   WagesReportChart,
 } from "../reports/WagesReports";
 import { SkillsReport } from "../reports/SkillsReports";
-import { TeamsReport } from "../reports/TeamsReport";
-import DateRangeSelector from "../components/DateRangeSelector";
+import { TeamsReport } from "../reports/ProductivityReport";
 
 const ReportsContainer = () => {
   const [employees, setEmployees] = useState([]);
@@ -25,7 +24,7 @@ const ReportsContainer = () => {
     "Leave Balances Report",
     "Wages Report",
     "Skills Report",
-    "Teams Report",
+    "Productivity Report",
   ];
 
   useEffect(() => {
@@ -69,7 +68,7 @@ const ReportsContainer = () => {
       >
         <SearchBar
           onChange={(value) => {
-            if (value === "Skills Report" || value === "Teams Report") {
+            if (value === "Skills Report" || value === "Productivity Report") {
               setSelectedEmployee("");
             }
             setSelectedReport(value);
@@ -85,14 +84,13 @@ const ReportsContainer = () => {
           }}
           disabled={
             selectedReport === "Skills Report" ||
-            selectedReport === "Teams Report"
+            selectedReport === "Productivity Report"
               ? true
               : false
           }
           value={selectedEmployee || "Select Employee..."}
           width={"300px"}
         />
-        <DateRangeSelector />
       </Box>
       <Paper
         sx={{
@@ -137,7 +135,7 @@ const ReportsContainer = () => {
         {selectedReport === "Skills Report" && !selectedEmployee && (
           <SkillsReport />
         )}
-        {selectedReport === "Teams Report" && !selectedEmployee && (
+        {selectedReport === "Productivity Report" && !selectedEmployee && (
           <TeamsReport />
         )}
       </Paper>
