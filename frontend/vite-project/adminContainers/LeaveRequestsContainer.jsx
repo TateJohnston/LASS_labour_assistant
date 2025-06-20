@@ -22,30 +22,6 @@ const LeaveRequestContainer = () => {
   const [openApproveDialogueBox, setOpenApproveDialogueBox] = useState(false);
   const [openDenyDialogueBox, setOpenDenyDialogueBox] = useState(false);
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8081/lass/leave/requests`)
-      .then((res) => {
-        const data = res.data.data;
-        setRequests(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8081/lass/employees/`)
-      .then((res) => {
-        const data = res.data.data;
-        setEmployees(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
   const leaveOptions = [
     { type: "Annual Leave", query: "al_balance" },
     { type: "Long Service Leave", query: "lsl_balance" },
@@ -59,6 +35,19 @@ const LeaveRequestContainer = () => {
     Pending: Colors.warning,
     Denied: Colors.error,
   };
+
+  useEffect(() => {
+    fetchRequests();
+    axios
+      .get(`http://localhost:8081/lass/employees/`)
+      .then((res) => {
+        const data = res.data.data;
+        setEmployees(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     let filtered = requests.sort(
@@ -77,6 +66,18 @@ const LeaveRequestContainer = () => {
     }
     setFilteredRequests(filtered);
   }, [selectedEmployee, selectedFilter, requests]);
+
+  const fetchRequests = () => {
+    axios
+      .get(`http://localhost:8081/lass/leave/requests`)
+      .then((res) => {
+        const data = res.data.data;
+        setRequests(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const specificRequestHandler = (request) => {
     const leaveRequestID = request.leave_request_id;
@@ -174,6 +175,7 @@ const LeaveRequestContainer = () => {
             onClickBack={() => {
               setShowLeaveRequestPage(false);
               setSelectedRequest({});
+              fetchRequests();
             }}
             displayHandle={approvedLeave || denyLeave ? "none" : "flex"}
             content={

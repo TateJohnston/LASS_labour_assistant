@@ -3,6 +3,7 @@ import { DateRange } from "react-date-range";
 import { addDays, isAfter } from "date-fns";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
+import { Colors } from "../src/assets/Colors";
 
 const DateRangeSelector = ({ onChange, open, toggle }) => {
   const [range, setRange] = useState([
@@ -28,7 +29,21 @@ const DateRangeSelector = ({ onChange, open, toggle }) => {
   if (!open) return null;
 
   return (
-    <div style={{ zIndex: 10 }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        position: "absolute",
+        top: "55px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        background: "white",
+        padding: "16px",
+        border: `1px solid ${Colors.primary}`,
+        borderRadius: "8px",
+        zIndex: 10,
+      }}
+    >
       <DateRange
         editableDateInputs
         onChange={handleSelect}

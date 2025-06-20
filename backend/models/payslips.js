@@ -49,6 +49,14 @@ Payslips.init(
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
+    pay_period_start_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+    pay_period_end_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
     pay_day: {
       type: DataTypes.DATEONLY,
       allowNull: false,

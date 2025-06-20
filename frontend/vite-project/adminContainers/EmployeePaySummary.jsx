@@ -92,7 +92,7 @@ const EmployeePaySummary = ({
   useEffect(() => {
     axios
       .get(
-        `http://localhost:8081/lass/payroll/${employee_id}/${start_date}/${end_date}`
+        `http://localhost:8081/lass/payroll/summary/${employee_id}/${start_date}/${end_date}`
       )
       .then((res) => {
         const data = res.data.data;
@@ -135,20 +135,20 @@ const EmployeePaySummary = ({
           padding: "10px",
           height: "600px",
           border: `3px solid ${Colors.secondary}`,
+          overflowY: "auto",
+          "&::-webkit-scrollbar": {
+            width: "8px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(0,0,0,0.2)",
+            borderRadius: "10px",
+          },
         }}
         component={Paper}
       >
         <Table
           sx={{
             minWidth: 650,
-            overflowY: "auto",
-            "&::-webkit-scrollbar": {
-              width: "8px",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "rgba(0,0,0,0.2)",
-              borderRadius: "10px",
-            },
           }}
           aria-label="Pay Summary Table"
         >
@@ -251,8 +251,8 @@ const EmployeePaySummary = ({
           {!status && !payConfirmed ? (
             <Buttons
               width="100px"
-              content={"Confirm"}
-              onClick={handleClickOpen}
+              content={payday ? "Confirm" : "Select Payday"}
+              onClick={payday && handleClickOpen}
             />
           ) : (
             <Typography sx={{ color: Colors.secondary }}>Paid</Typography>

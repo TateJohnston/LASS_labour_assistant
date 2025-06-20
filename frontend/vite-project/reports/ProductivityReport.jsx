@@ -6,6 +6,7 @@ import DateRangeSelector from "../components/DateRangeSelector";
 import Buttons from "../components/Buttons";
 import convertDate from "../utilities/convertDate";
 import dateToDMY from "../utilities/dateToDMY";
+import { Box } from "@mui/material";
 
 export const TeamsReport = () => {
   const [reportData, setReportData] = useState([]);
@@ -61,10 +62,23 @@ export const TeamsReport = () => {
   };
 
   return (
-    <>
-      {!open && (
-        <Buttons content={"Select Date Range"} onClick={() => setOpen(true)} />
-      )}
+    <Box
+      sx={{
+        position: "relative",
+        overflowY: "auto",
+        "&::-webkit-scrollbar": {
+          width: "8px",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: "rgba(0,0,0,0.2)",
+          borderRadius: "10px",
+        },
+      }}
+    >
+      <Buttons
+        content={"Select Date Range"}
+        onClick={() => setOpen((prev) => !prev)}
+      />
 
       <DateRangeSelector
         onChange={(value) => {
@@ -103,6 +117,6 @@ export const TeamsReport = () => {
         xAxisTextFontSize={20}
         yAxisTextFontSize={20}
       />
-    </>
+    </Box>
   );
 };
