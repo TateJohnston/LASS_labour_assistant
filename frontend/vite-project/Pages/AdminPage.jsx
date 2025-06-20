@@ -4,10 +4,6 @@ import { Colors } from "../src/assets/Colors";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useContext, useState } from "react";
 import Buttons from "../components/Buttons";
-import Calendar from "../components/Calendar";
-import RosterContainer from "../employeeContainers/RosterContainer";
-import EmployeeLeaveContainer from "../employeeContainers/LeaveContainer";
-import EmployeePayslipsContainer from "../employeeContainers/PayslipsContainer";
 import HomeContainer from "../adminContainers/HomeContainer";
 import AllocationsContainer from "../adminContainers/AllocationsContainer";
 import EmployeesContainer from "../adminContainers/EmployeesContainer";
@@ -15,7 +11,6 @@ import LeaveRequestContainer from "../adminContainers/LeaveRequestsContainer";
 import LicensesContainer from "../adminContainers/LicensesContainer";
 import TeamsContainer from "../adminContainers/TeamsContainer";
 import PayrollContainer from "../adminContainers/PayrollContainer";
-import DropdownMenu from "../components/DropdownMenu";
 import { UserContext } from "../context/UserContext";
 import ReportsContainer from "../adminContainers/ReportsContainer";
 
