@@ -16,7 +16,7 @@ export const TeamsReport = () => {
   const productivityCalc = (bonus) => {
     // This is the same bonus calculation that my work uses
     const productivity = (bonus - 20) / 3 + 70;
-    return productivity;
+    return Math.floor(productivity);
   };
 
   const grouped = {};
@@ -29,6 +29,7 @@ export const TeamsReport = () => {
   });
 
   const labels = Object.keys(grouped);
+  const displayLabels = labels.map((date) => dateToDMY(date));
   const dayData = labels.map((date) => grouped[date]["Day Shift"] ?? 0);
   const eveningData = labels.map((date) => grouped[date]["Evening Shift"] ?? 0);
   const nightData = labels.map((date) => grouped[date]["Night Shift"] ?? 0);
@@ -64,6 +65,7 @@ export const TeamsReport = () => {
       {!open && (
         <Buttons content={"Select Date Range"} onClick={() => setOpen(true)} />
       )}
+
       <DateRangeSelector
         onChange={(value) => {
           fetchReport(value.startDate, value.endDate);
@@ -72,7 +74,7 @@ export const TeamsReport = () => {
         toggle={() => setOpen(false)}
       />
       <BarChart
-        labels={labels}
+        labels={displayLabels}
         datasets={[
           {
             label: "Day",
@@ -90,9 +92,13 @@ export const TeamsReport = () => {
             backgroundColor: shiftColors["Night Shift"],
           },
         ]}
-        xAxisText={`Shift Productivity Data for ${dateToDMY(
-          startDate
-        )} - ${dateToDMY(endDate)}`}
+        xAxisText={
+          startDate && endDate
+            ? `Shift Productivity Data for ${dateToDMY(
+                startDate
+              )} - ${dateToDMY(endDate)}`
+            : "Select a Date Range To View Report"
+        }
         yAxisText={"Containers Moved"}
         xAxisTextFontSize={20}
         yAxisTextFontSize={20}

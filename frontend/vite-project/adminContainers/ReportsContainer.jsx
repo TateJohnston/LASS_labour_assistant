@@ -68,7 +68,12 @@ const ReportsContainer = () => {
         }}
       >
         <SearchBar
-          onChange={(value) => setSelectedReport(value)}
+          onChange={(value) => {
+            if (value === "Skills Report" || value === "Teams Report") {
+              setSelectedEmployee("");
+            }
+            setSelectedReport(value);
+          }}
           options={reports}
           value={selectedReport || "Select Report..."}
           width={"300px"}
@@ -79,7 +84,10 @@ const ReportsContainer = () => {
             setSelectedEmployee(value);
           }}
           disabled={
-            selectedReport === "Skills Report" || "Teams Report" ? true : false
+            selectedReport === "Skills Report" ||
+            selectedReport === "Teams Report"
+              ? true
+              : false
           }
           value={selectedEmployee || "Select Employee..."}
           width={"300px"}
