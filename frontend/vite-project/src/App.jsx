@@ -6,24 +6,23 @@ import { UserContext, UserProvider } from "../context/UserContext";
 import { useContext } from "react";
 
 function App() {
-  // const DisplayAccount = () => {
-  //   const { isAdmin, successfulLogin } = useContext(UserContext);
-  //   if (!successfulLogin) {
-  //     return <LoginPage />;
-  //   } else {
-  //     if (isAdmin) {
-  //       return <AdminPage />;
-  //     } else {
-  //       return <EmployeePage />;
-  //     }
-  //   }
-  // };
+  const DisplayAccount = () => {
+    const { isAdmin, successfulLogin } = useContext(UserContext);
+    if (!successfulLogin) {
+      return <LoginPage />;
+    } else {
+      if (isAdmin) {
+        return <AdminPage />;
+      } else {
+        return <EmployeePage />;
+      }
+    }
+  };
 
   return (
     <>
       <UserProvider>
-        {/* <DisplayAccount /> */}
-        <AdminPage />
+        <DisplayAccount />
       </UserProvider>
     </>
   );
