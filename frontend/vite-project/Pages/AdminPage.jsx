@@ -28,73 +28,10 @@ const AdminPage = () => {
     <div
       style={{
         height: "100vh",
-        width: "100%",
+        width: "100vw",
+        // width: "100%",
       }}
     >
-      <div
-        style={{
-          width: "100vw",
-          height: "75px",
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          padding: "5px",
-        }}
-      >
-        <div
-          style={{
-            flex: "1",
-            display: "flex",
-            justifyContent: "end",
-          }}
-        >
-          <Logo width="200px" />
-        </div>
-        <div style={{ flex: "1" }}>
-          <Typography
-            variant="h2"
-            sx={{ color: Colors.primary, fontFamily: "sans-serif" }}
-          >
-            {/* {userDetails.name} */}
-          </Typography>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            gap: "10px",
-            alignItems: "center",
-            flex: "1",
-            justifyContent: "start",
-          }}
-        >
-          <NotificationsIcon
-            onClick={() => {
-              console.log("works");
-            }}
-            sx={{
-              height: "40px",
-              width: "40px",
-              "&:hover": {
-                cursor: "pointer",
-                transition: "transform ease 0.3s",
-                transform: "scale(1.05)",
-              },
-            }}
-          />
-          <Avatar
-            sx={{
-              bgcolor: Colors.primary,
-              color: Colors.secondary,
-              height: "60px",
-              width: "60px",
-              fontSize: "xx-large",
-            }}
-          >
-            {/* {userDetails.name[0]} */}
-          </Avatar>
-        </div>
-      </div>
       <Box
         sx={{
           display: "flex",
@@ -106,6 +43,15 @@ const AdminPage = () => {
           borderBottom: "2px solid #1CA89E",
         }}
       >
+        <div
+          style={{
+            flex: "1",
+            display: "flex",
+            justifyContent: "end",
+          }}
+        >
+          <Logo width="150px" />
+        </div>
         <Buttons
           width="150px"
           color={Colors.content}
@@ -154,7 +100,44 @@ const AdminPage = () => {
           content={"Payroll"}
           onClick={() => setContent("Payroll")}
         />
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            gap: "10px",
+            alignItems: "center",
+            flex: "1",
+            justifyContent: "start",
+          }}
+        >
+          <NotificationsIcon
+            onClick={() => {
+              console.log("works");
+            }}
+            sx={{
+              height: "40px",
+              width: "40px",
+              "&:hover": {
+                cursor: "pointer",
+                transition: "transform ease 0.3s",
+                transform: "scale(1.05)",
+              },
+            }}
+          />
+          <Avatar
+            sx={{
+              bgcolor: Colors.primary,
+              color: Colors.secondary,
+              height: "60px",
+              width: "60px",
+              fontSize: "xx-large",
+            }}
+          >
+            {/* {userDetails.name[0]} */}
+          </Avatar>
+        </div>
       </Box>
+
       <div
         style={{
           backgroundColor: Colors.primary,
