@@ -1,4 +1,5 @@
 const dateToDMY = (date) => {
+  if (!date || typeof date !== "string") return "Invalid Date";
   const dateArr = date.split("-");
   const year = dateArr[0];
   const month = dateArr[1];

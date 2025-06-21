@@ -1,6 +1,9 @@
-const Logo = ({ width = "100%", maxwidth = "960px" }) => {
+const Logo = ({ width = "100%", maxwidth = "960px", display }) => {
   return (
-    <img style={{ width, maxwidth }} src="../src/assets/LassLogo.png"></img>
+    <img
+      style={{ width, maxwidth, display }}
+      src="../src/assets/LassLogo.png"
+    ></img>
   );
 };
 

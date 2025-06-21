@@ -31,20 +31,25 @@ const EmployeeLeaveContainer = () => {
           { label: "Maternity Leave", value: `${data.ml_balance} days` },
         ];
         setLeaveBalances(balanceObject);
+        fetchRequests();
       });
+  }, []);
 
+  const fetchRequests = () => {
     axios
       .get(
         `http://localhost:8081/lass/leave/requests?employeeID=${userDetails.employeeID}`
       )
       .then((res) => {
         const data = res.data.data;
-        const sortedByRequestDate = data.sort(
-          (a, b) => b.leave_request_id - a.leave_request_id
-        );
-        setLeaveRequests(sortedByRequestDate);
+        if (data) {
+          const sortedByRequestDate = data.sort(
+            (a, b) => b.leave_request_id - a.leave_request_id
+          );
+          setLeaveRequests(sortedByRequestDate);
+        }
       });
-  }, []);
+  };
 
   const colorScheme = {
     Approved: "#41BC53",
@@ -65,6 +70,7 @@ const EmployeeLeaveContainer = () => {
         <LeaveRequestForm
           submitLeaveRequest={submitLeaveRequest}
           setSubmitLeaveRequest={setSubmitLeaveRequest}
+          fetchRequests={fetchRequests()}
         />
       ) : (
         <Box

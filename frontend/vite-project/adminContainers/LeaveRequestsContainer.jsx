@@ -1,5 +1,5 @@
 import SearchBar from "../components/Searchbar";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Paper } from "@mui/material";
 import { Colors } from "../src/assets/Colors";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -50,21 +50,23 @@ const LeaveRequestContainer = () => {
   }, []);
 
   useEffect(() => {
-    let filtered = requests.sort(
-      (a, b) => b.leave_request_id - a.leave_request_id
-    );
+    if (requests) {
+      let filtered = requests.sort(
+        (a, b) => b.leave_request_id - a.leave_request_id
+      );
 
-    if (selectedEmployee) {
-      filtered = filtered.filter(
-        (request) => request.name === selectedEmployee
-      );
+      if (selectedEmployee) {
+        filtered = filtered.filter(
+          (request) => request.name === selectedEmployee
+        );
+      }
+      if (selectedFilter) {
+        filtered = filtered.filter(
+          (request) => request.status === selectedFilter
+        );
+      }
+      setFilteredRequests(filtered);
     }
-    if (selectedFilter) {
-      filtered = filtered.filter(
-        (request) => request.status === selectedFilter
-      );
-    }
-    setFilteredRequests(filtered);
   }, [selectedEmployee, selectedFilter, requests]);
 
   const fetchRequests = () => {
@@ -261,54 +263,66 @@ const LeaveRequestContainer = () => {
               paddingRight: "5px",
             }}
           >
-            {filteredRequests.map((request) => (
-              <Box
-                key={request.leave_request_id}
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  width: "100%",
-                  backgroundColor: colorScheme[request.status],
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                  borderRadius: "10px",
-                  padding: "20px 0px",
-                }}
-              >
-                <Typography variant="h5" sx={{ flex: "1", fontWeight: "bold" }}>
-                  {request.name}
-                </Typography>
-                <Typography
-                  variant="h5"
-                  sx={{ fontStyle: "italic", flex: "1" }}
-                >
-                  {dateToDMY(request.start_date)}
-                </Typography>
-                <Typography
-                  variant="h5"
-                  sx={{ fontStyle: "italic", flex: "0.3" }}
-                >
-                  -
-                </Typography>
-                <Typography
-                  variant="h5"
-                  sx={{ fontStyle: "italic", flex: "1" }}
-                >
-                  {dateToDMY(request.end_date)}
-                </Typography>
-
-                <Typography variant="h5" sx={{ flex: "1", fontWeight: "bold" }}>
-                  {request.status}
-                </Typography>
-                <DropDownButton
-                  flex={"0.5"}
-                  onClick={() => {
-                    setShowLeaveRequestPage(true);
-                    specificRequestHandler(request);
+            {filteredRequests.length > 0 ? (
+              filteredRequests.map((request) => (
+                <Box
+                  key={request.leave_request_id}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    width: "100%",
+                    backgroundColor: colorScheme[request.status],
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    borderRadius: "10px",
+                    padding: "20px 0px",
                   }}
-                />
-              </Box>
-            ))}
+                >
+                  <Typography
+                    variant="h5"
+                    sx={{ flex: "1", fontWeight: "bold" }}
+                  >
+                    {request.name}
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    sx={{ fontStyle: "italic", flex: "1" }}
+                  >
+                    {dateToDMY(request.start_date)}
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    sx={{ fontStyle: "italic", flex: "0.3" }}
+                  >
+                    -
+                  </Typography>
+                  <Typography
+                    variant="h5"
+                    sx={{ fontStyle: "italic", flex: "1" }}
+                  >
+                    {dateToDMY(request.end_date)}
+                  </Typography>
+
+                  <Typography
+                    variant="h5"
+                    sx={{ flex: "1", fontWeight: "bold" }}
+                  >
+                    {request.status}
+                  </Typography>
+                  <DropDownButton
+                    flex={"0.5"}
+                    onClick={() => {
+                      setShowLeaveRequestPage(true);
+                      specificRequestHandler(request);
+                    }}
+                  />
+                </Box>
+              ))
+            ) : (
+              <Paper>
+                <Typography>No Leave requests to display</Typography>
+              </Paper>
+            )}
           </Box>
         </>
       )}
