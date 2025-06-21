@@ -16,6 +16,9 @@ const payrollRoutes = require("./routes/payrollRoutes");
 const logInRoutes = require("./routes/logInRoutes");
 const reportRoutes = require("./routes/reportRoutes");
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
+
 app.use(cors());
 app.use(express.json());
 app.get("/", (req, res) => {
@@ -32,6 +35,8 @@ app.use("/lass/teams", teamRoutes);
 app.use("/lass/payroll", payrollRoutes);
 app.use("/lass/logIn", logInRoutes);
 app.use("/lass/reports", reportRoutes);
+
+app.use("/lass", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const PORT = process.env.PORT || 8080;
 

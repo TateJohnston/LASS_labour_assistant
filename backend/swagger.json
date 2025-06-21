@@ -1,0 +1,405 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "LASS - Labour Assistant",
+    "description": "Labour Assistant application for managing employees and day to day operations.",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:8081",
+  "basePath": "/lass",
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/employees": {
+      "get": {
+        "tags": ["Employees"],
+        "summary": "Fetch Employees",
+        "responses": {
+          "200": {
+            "description": "Successful Employees fetch"
+          },
+          "500": {
+            "description": "Server error in fetching Employees"
+          }
+        }
+      }
+    },
+    "/employees/leavebalances/{employeeID}": {
+      "get": {
+        "tags": ["Employees"],
+        "summary": "Get Employees Leave Balances by Employee ID",
+        "parameters": [
+          {
+            "name": "employeeID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "The ID of the employee's leave balances you want to fetch"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Fetch"
+          },
+          "404": {
+            "description": "Employee not found"
+          },
+          "500": { "description": "Unsuccessful Fetch" }
+        }
+      }
+    },
+    "/licenses/due": {
+      "get": {
+        "tags": ["Licenses"],
+        "summary": "Get Licenses Due within 30 days",
+
+        "responses": {
+          "200": { "description": "Successful Fetch" },
+          "500": { "description": "Unsuccessful Fetch" }
+        }
+      }
+    },
+    "/licenses/update/{licenseID}": {
+      "put": {
+        "tags": ["Licenses"],
+        "summary": "Update License data",
+        "parameters": [
+          {
+            "name": "licenseID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "The ID of the license you want to change"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "description": "Update License",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cost_per_month": {
+                  "type": "number",
+                  "example": 300
+                },
+                "expiry": { "type": "string", "example": "2025-07-01" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Bid Successfully updated" },
+          "404": { "description": "Invalid Parameter" },
+          "500": { "description": "Unsuccessful Fetch" }
+        }
+      }
+    },
+    "/leave/requests": {
+      "get": {
+        "tags": ["Leave"],
+        "summary": "Get all leave requests",
+        "responses": {
+          "200": { "description": "Successful Fetch" },
+          "404": { "description": "Sale property not found" },
+          "500": { "description": "Unsuccessful Fetch" }
+        }
+      }
+    },
+    "/leave/request/{leaverequestID}": {
+      "get": {
+        "tags": ["Leave"],
+        "summary": "Get Specific leave request",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "leaverequestID",
+            "required": true,
+            "description": "Specific leave request you want to fetch",
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Leave request successfully fetched" },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/skills/expiring/tickets": {
+      "get": {
+        "tags": ["Skills"],
+        "summary": "Get Expiring Tickets",
+        "responses": {
+          "200": { "description": "Successful Fetch" },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/skills/expiring/voc": {
+      "get": {
+        "tags": ["Skills"],
+        "summary": "Get Expiring VOC's",
+        "responses": {
+          "200": { "description": "Successful Fetch" },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/skills/revoke/{employeeID}/{roleID}": {
+      "put": {
+        "tags": ["Skills"],
+        "summary": "Revoke Employees Skill",
+        "parameters": [
+          {
+            "name": "employeeID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "The ID of the employee you want to change"
+          },
+          {
+            "name": "roleID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "The ID of the skill you want to revoke"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successfully Revoked" },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/skills/reinstate/{employeeID}/{roleID}": {
+      "put": {
+        "tags": ["Skills"],
+        "summary": "Reinstate Employees Skill",
+        "parameters": [
+          {
+            "name": "employeeID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "The ID of the skill you want to reinstate"
+          },
+          {
+            "name": "roleID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "The ID of the skill you want to revoke"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successfully Reinstated" },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/allocations": {
+      "get": {
+        "tags": ["Allocations"],
+        "summary": "Fetch Available Employees",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "format": "date" },
+
+            "description": "The date you want to fetch available employees for YYYY-MM-DD"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successfully Reinstated" },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/teams/addTeam": {
+      "post": {
+        "tags": ["Teams"],
+        "summary": "Add Team",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "description": "Team data to add",
+            "schema": {
+              "type": "object",
+              "required": ["shift_id", "bonus", "work_date"],
+              "properties": {
+                "shift_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "bonus": {
+                  "type": "number",
+                  "example": 150
+                },
+                "work_date": {
+                  "type": "string",
+                  "format": "date",
+                  "example": "2025-07-01"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Team added successfully"
+          },
+          "500": {
+            "description": "Server error while adding team"
+          }
+        }
+      }
+    },
+    "/teams/{shiftdate}": {
+      "get": {
+        "tags": ["Teams"],
+        "summary": "Get teams by date",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "shiftdate",
+            "required": true,
+            "description": "The date you want to fetch teams for",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful Fetch" },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/payroll/{startDate}/{endDate}": {
+      "get": {
+        "tags": ["Payroll"],
+        "summary": "Get payable time summary",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "startDate",
+            "required": true,
+            "description": "Start Date",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "type": "string",
+            "name": "endDate",
+            "required": true,
+            "description": "End Date"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful Fetch" },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/payroll/summary/{employeeID}/{startDate}/{endDate}": {
+      "get": {
+        "tags": ["Payroll"],
+        "summary": "Get Employee Pay Summary",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "employeeID",
+            "type": "integer",
+            "required": true,
+            "description": "Employee ID"
+          },
+          {
+            "in": "path",
+            "name": "startDate",
+            "type": "string",
+            "required": true,
+            "description": "Start Date"
+          },
+          {
+            "in": "path",
+            "type": "string",
+            "name": "endDate",
+            "required": true,
+            "description": "End Date"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful Fetch" },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/reports/leave-balances-report": {
+      "get": {
+        "tags": ["Reports"],
+        "summary": "Leave Balances Report",
+        "responses": {
+          "200": {
+            "description": "Successful Fetch"
+          },
+          "500": {
+            "description": "Server Error"
+          }
+        }
+      }
+    },
+    "/reports/wages-report": {
+      "get": {
+        "tags": ["Reports"],
+        "summary": "Wages Report",
+        "responses": {
+          "200": { "description": "Successful Fetch" },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/reports/skills-report": {
+      "get": {
+        "tags": ["Reports"],
+        "summary": "Skils Report",
+        "responses": {
+          "200": { "description": "Successful Fetch" },
+          "500": { "description": "Server Error" }
+        }
+      }
+    },
+    "/reports/teams-report/{startDate}/{endDate}": {
+      "get": {
+        "tags": ["Reports"],
+        "summary": "Teams Report",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "startDate",
+            "required": true,
+            "description": "Start Date YYYY-MM-DD",
+            "type": "string"
+          },
+          {
+            "in": "path",
+            "name": "endDate",
+            "required": true,
+            "description": "End Date YYYY-MM-DD",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Successful Fetch" },
+          "500": { "description": "Server Error" }
+        }
+      }
+    }
+  }
+}
