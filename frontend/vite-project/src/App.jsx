@@ -4,25 +4,27 @@ import EmployeePage from "../Pages/EmployeePage";
 import AdminPage from "../Pages/AdminPage";
 import { UserContext, UserProvider } from "../context/UserContext";
 import { useContext } from "react";
+import { SnackbarProvider } from "notistack";
 
-function App() {
-  const DisplayAccount = () => {
-    const { isAdmin, successfulLogin } = useContext(UserContext);
-    if (!successfulLogin) {
-      return <LoginPage />;
+const DisplayAccount = () => {
+  const { isAdmin, successfulLogin } = useContext(UserContext);
+  if (!successfulLogin) {
+    return <LoginPage />;
+  } else {
+    if (isAdmin) {
+      return <AdminPage />;
     } else {
-      if (isAdmin) {
-        return <AdminPage />;
-      } else {
-        return <EmployeePage />;
-      }
+      return <EmployeePage />;
     }
-  };
-
+  }
+};
+function App() {
   return (
     <>
       <UserProvider>
-        <DisplayAccount />
+        <SnackbarProvider autoHideDuration={6000} maxSnack={10}>
+          <DisplayAccount />
+        </SnackbarProvider>
       </UserProvider>
     </>
   );

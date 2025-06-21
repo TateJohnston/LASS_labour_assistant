@@ -78,9 +78,27 @@ const updateBonus = (req, res) => {
     });
 };
 
+const deleteTeam = (req, res) => {
+  const teamID = req.params.teamID;
+  Models.Teams.destroy({ where: { team_id: teamID } })
+    .then((data) => {
+      res
+        .status(200)
+        .send({
+          result: 200,
+          message: "Team Successfully Deleted",
+          data: data,
+        });
+    })
+    .catch((err) => {
+      res.status(500).send({ result: 500, error: err.message });
+    });
+};
+
 module.exports = {
   addTeam,
   getTeams,
   addEmployeeToTeam,
   updateBonus,
+  deleteTeam,
 };

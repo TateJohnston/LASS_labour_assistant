@@ -2,7 +2,6 @@ import { Box, Typography } from "@mui/material";
 import SearchBar from "./Searchbar";
 import DoneIcon from "@mui/icons-material/Done";
 import axios from "axios";
-import { useState } from "react";
 import { Colors } from "../src/assets/Colors";
 
 const EmployeeShiftAllocation = ({
