@@ -57,10 +57,10 @@ select
     truck_ticket_expiry
 from employee_skills
 where (
-TIMESTAMPDIFF(MONTH,CURRENT_TIMESTAMP,foreman_ticket_expiry) <= 3 OR
-TIMESTAMPDIFF(MONTH,CURRENT_TIMESTAMP,crane_ticket_expiry) <= 3 OR
-TIMESTAMPDIFF(MONTH,CURRENT_TIMESTAMP,fork_ticket_expiry) <= 3 OR
-TIMESTAMPDIFF(MONTH,CURRENT_TIMESTAMP,truck_ticket_expiry) <= 3
+TIMESTAMPDIFF(MONTH,CURRENT_TIMESTAMP,foreman_ticket_expiry) <= 2 OR
+TIMESTAMPDIFF(MONTH,CURRENT_TIMESTAMP,crane_ticket_expiry) <= 2 OR
+TIMESTAMPDIFF(MONTH,CURRENT_TIMESTAMP,fork_ticket_expiry) <= 2 OR
+TIMESTAMPDIFF(MONTH,CURRENT_TIMESTAMP,truck_ticket_expiry) <= 2
 )`;
 
   sequelize
@@ -102,91 +102,6 @@ TIMESTAMPDIFF(MONTH,last_clerk_voc,CURRENT_TIMESTAMP) >= 11
     })
     .catch((err) => {
       res.status(500).send({ result: 500, error: err.message });
-    });
-};
-
-const createForeman = (req, res) => {
-  const employeeID = req.params.employeeID;
-  const data = { employee_id: employeeID, role_id: 1, ...req.body };
-
-  Models.Foreman.create(data)
-    .then((data) => {
-      res.send({
-        result: 200,
-        message: "Foreman Succesfully created",
-        data: data,
-      });
-    })
-    .catch((err) => {
-      res.send({ result: 500, error: err.message });
-    });
-};
-
-const createClerk = (req, res) => {
-  const employeeID = req.params.employeeID;
-  const data = { employee_id: employeeID, role_id: 3, ...req.body };
-
-  Models.Clerks.create(data)
-    .then((data) => {
-      res.send({
-        result: 200,
-        message: "Clerk Succesfully created",
-        data: data,
-      });
-    })
-    .catch((err) => {
-      res.send({ result: 500, error: err.message });
-    });
-};
-
-const createForkOperator = (req, res) => {
-  const employeeID = req.params.employeeID;
-  const data = { employee_id: employeeID, role_id: 5, ...req.body };
-
-  Models.ForkliftOperators.create(data)
-    .then((data) => {
-      res.send({
-        result: 200,
-        message: "Fork Operator Succesfully created",
-        data: data,
-      });
-    })
-    .catch((err) => {
-      res.send({ result: 500, error: err.message });
-    });
-};
-
-const createCraneOperator = (req, res) => {
-  const employeeID = req.params.employeeID;
-  const data = { employee_id: employeeID, role_id: 2, ...req.body };
-
-  Models.CraneOperators.create(data)
-    .then((data) => {
-      res.send({
-        result: 200,
-        message: "Crane operator Succesfully created",
-        data: data,
-      });
-    })
-    .catch((err) => {
-      res.send({ result: 500, error: err.message });
-    });
-};
-
-const createTruckOperator = (req, res) => {
-  const employeeID = req.params.employeeID;
-  const data = { employee_id: employeeID, role_id: 4, ...req.body };
-
-  Models.TruckOperators.create(data)
-    .then((data) => {
-      res.send({
-        result: 200,
-        message: "Truck Operator Succesfully created",
-        data: data,
-      });
-    })
-    .catch((err) => {
-      res.send({ result: 500, error: err.message });
     });
 };
 
@@ -242,11 +157,7 @@ module.exports = {
   getEmployeesSkills,
   getExpiringTickets,
   getExpiringVOC,
-  createForeman,
-  createClerk,
-  createCraneOperator,
-  createForkOperator,
-  createTruckOperator,
+
   revokeSkill,
   reinstateSkill,
 };
