@@ -214,7 +214,7 @@ const PayrollContainer = () => {
             variant="h6"
             sx={{ color: Colors.error, marginTop: "15px" }}
           >
-            Selected Pay Period does meet 14 day requirement
+            Selected Pay Period does not meet 14 day requirement
           </Typography>
         )
       ) : (

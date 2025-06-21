@@ -1,10 +1,8 @@
-import { Typography, Avatar, Box, Paper } from "@mui/material";
+import { Avatar, Box, Paper } from "@mui/material";
 import Logo from "../components/Logo";
 import { Colors } from "../src/assets/Colors";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Buttons from "../components/Buttons";
-import Calendar from "../components/Calendar";
 import RosterContainer from "../employeeContainers/RosterContainer";
 import EmployeeLeaveContainer from "../employeeContainers/LeaveContainer";
 import EmployeePayslipsContainer from "../employeeContainers/PayslipsContainer";
@@ -13,6 +11,7 @@ import { UserContext } from "../context/UserContext";
 const EmployeePage = () => {
   const [content, setContent] = useState("Roster");
   const { userDetails, setSuccessfulLogin } = useContext(UserContext);
+
   const [openSignoutForm, setOpenSignoutForm] = useState(false);
 
   if (Object.entries(userDetails).length > 0) {
@@ -31,9 +30,14 @@ const EmployeePage = () => {
             flexDirection: "row",
             alignItems: "center",
             borderBottom: "2px solid #1CA89E",
+            justifyContent: "space-between",
           }}
         >
-          <div style={{ flex: "1" }}>
+          <div
+            style={{
+              flex: "1",
+            }}
+          >
             <Logo width="150px" />
           </div>
           <Box
@@ -46,24 +50,15 @@ const EmployeePage = () => {
               gap: "30px",
             }}
           >
-            <Buttons
-              width="150px"
-              color={Colors.content}
-              content={"Roster"}
-              onClick={() => setContent("Roster")}
-            />
-            <Buttons
-              width="150px"
-              color={Colors.content}
-              content={"Leave"}
-              onClick={() => setContent("Leave")}
-            />
-            <Buttons
-              width="150px"
-              color={Colors.content}
-              content={"Payslips"}
-              onClick={() => setContent("Payslips")}
-            />
+            {["Roster", "Leave", "Payslips"].map((item) => (
+              <Buttons
+                key={item}
+                width={"150px"}
+                color={Colors.content}
+                content={item}
+                onClick={() => setContent(item)}
+              />
+            ))}
           </Box>
           <div
             style={{

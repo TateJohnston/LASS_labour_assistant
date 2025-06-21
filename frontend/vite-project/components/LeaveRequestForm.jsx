@@ -6,14 +6,16 @@ import DateRangeSelector from "./DateRangeSelector";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../context/UserContext";
 import { Colors } from "../src/assets/Colors";
+import convertDate from "../utilities/convertDate";
+import dateToDMY from "../utilities/dateToDMY";
 
-const LeaveRequestForm = ({ setSubmitLeaveRequest }) => {
+const LeaveRequestForm = ({ setSubmitLeaveRequest, fetchRequests }) => {
   const [open, setOpen] = useState(false);
   const [leaveType, setLeaveType] = useState();
   const [submitted, setSubmitted] = useState(null);
   const [dateRange, setDateRange] = useState({});
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const { userDetails } = useContext(UserContext);
   const leaveOptions = [
     { type: "Annual Leave", query: "al_balance" },
@@ -111,7 +113,10 @@ const LeaveRequestForm = ({ setSubmitLeaveRequest }) => {
 
             <Buttons
               color={Colors.content}
-              onClick={() => setSubmitLeaveRequest(false)}
+              onClick={() => {
+                setSubmitLeaveRequest(false);
+                fetchRequests;
+              }}
               content={"Back to Leave Requests"}
             />
           </Box>
@@ -120,11 +125,17 @@ const LeaveRequestForm = ({ setSubmitLeaveRequest }) => {
         <DateRangeSelector
           toggle={toggle}
           open={open}
-          onChange={(range) => setDateRange(range)}
+          onChange={(range) => {
+            setDateRange(range);
+            setOpen(false);
+          }}
         />
-        {!submitted && (
+        {!submitted && Object.entries(dateRange).length > 0 && (
           <>
-            {" "}
+            <Typography variant="h6" sx={{ color: Colors.secondary }}>
+              {dateToDMY(convertDate(startDate))} -{" "}
+              {dateToDMY(convertDate(endDate))}
+            </Typography>{" "}
             <Buttons
               color={Colors.content}
               content={"Submit"}
@@ -135,9 +146,9 @@ const LeaveRequestForm = ({ setSubmitLeaveRequest }) => {
               content={"Cancel"}
               onClick={() => {
                 setOpen(false);
-                setLeaveType();
-                setStartDate();
-                setEndDate();
+                setLeaveType("");
+                setStartDate("");
+                setEndDate("");
                 setSubmitLeaveRequest(false);
                 setSubmitted(null);
               }}

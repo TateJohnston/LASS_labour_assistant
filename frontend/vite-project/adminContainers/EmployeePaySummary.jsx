@@ -249,11 +249,17 @@ const EmployeePaySummary = ({
         </Table>
         <>
           {!status && !payConfirmed ? (
-            <Buttons
-              width="100px"
-              content={payday ? "Confirm" : "Select Payday"}
-              onClick={payday && handleClickOpen}
-            />
+            payday ? (
+              <Buttons
+                width="100px"
+                content={payday ? "Confirm" : "Select Payday"}
+                onClick={payday && handleClickOpen}
+              />
+            ) : (
+              <Typography sx={{ color: Colors.error }}>
+                No Payday Selected
+              </Typography>
+            )
           ) : (
             <Typography sx={{ color: Colors.secondary }}>Paid</Typography>
           )}
