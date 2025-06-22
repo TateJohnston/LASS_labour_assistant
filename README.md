@@ -16,14 +16,14 @@ Create a split terminal, in one cd to backend, in the other cd to frontend/vite-
 Go to mySQL workbench and created a new database.<br>
 Make sure to keep track of the database user, password, and port.<br>
 Create a .env file in the backend folder, and setup with this structure.<br>
-DB_NAME=<your database name><br>
-DB_USER=<your database user><br>
-DB_PASSWORD=<your database password><br>
-DB_HOST=<your database host><br>
-DB_PORT=<your database port><br>
+DB_NAME=<i>database name</i><br>
+DB_USER=<i> database user</i>><br>
+DB_PASSWORD=<i> database password</i>><br>
+DB_HOST=<i> database host</i>><br>
+DB_PORT=<i> database port</i>><br>
 PORT=8081<br>
-TWILIO_ACCOUNT_SID=<twilio account sid><br>
-TWILIO_AUTH_TOKEN=<twilio auth token>.<br>
+TWILIO_ACCOUNT_SID=<i>twilio account sid</i><br>
+TWILIO_AUTH_TOKEN=<i>twilio auth token</i>.<br>
 Once done, in the backend terminal, type 'npm start'<br>
 Once tables have been synced, copy the content from script_file in the root folder of the project into your workbench with your new database selected.
 
