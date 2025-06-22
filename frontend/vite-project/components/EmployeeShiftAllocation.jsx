@@ -2,7 +2,6 @@ import { Box, Typography } from "@mui/material";
 import SearchBar from "./Searchbar";
 import DoneIcon from "@mui/icons-material/Done";
 import axios from "axios";
-import { useState } from "react";
 import { Colors } from "../src/assets/Colors";
 
 const EmployeeShiftAllocation = ({
@@ -25,16 +24,9 @@ const EmployeeShiftAllocation = ({
   };
 
   const addEmployeeToTeam = (employee_id, team, role, date) => {
-    return axios
-      .put(
-        `http://localhost:8081/lass/teams/addteam/${date}/${employee_id}/${team}/${rolesMap[role]}`
-      )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    return axios.put(
+      `http://localhost:8081/lass/teams/addteam/${date}/${employee_id}/${team}/${rolesMap[role]}`
+    );
   };
 
   const selectedTeams = (employee_id, value) => {

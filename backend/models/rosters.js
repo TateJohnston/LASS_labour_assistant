@@ -1,6 +1,7 @@
 const { DataTypes, Model } = require("sequelize");
 let dbConnect = require("../dbConnect");
 const sequelizeInstance = dbConnect.Sequelize;
+const Teams = require("./teams");
 
 class Rosters extends Model {}
 
@@ -60,4 +61,12 @@ Rosters.init(
     freezeTableName: true,
   }
 );
+
+Rosters.belongsTo(Teams, {
+  foreignKey: {
+    name: "team_id",
+    allowNull: true,
+  },
+  onDelete: "SET NULL",
+});
 module.exports = Rosters;

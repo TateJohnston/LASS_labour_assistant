@@ -55,28 +55,30 @@ const AllocationsContainer = () => {
       .get(`http://localhost:8081/lass/teams/${fullDate}`)
       .then((res) => {
         const data = res.data.data;
-
         const teamIDs = [];
-        data.forEach((entry) => {
-          teamIDs.push(entry.team_id);
-        });
-        const uniqueTeamIDs = new Set(teamIDs);
-
-        const teamsObject = {};
-        for (let teamIDS of uniqueTeamIDs) {
-          teamsObject[teamIDS] = [];
-        }
-
-        data.forEach((entry) => {
-          teamsObject[entry.team_id].push({
-            name: entry.employee_name,
-            employee_id: entry.employee_id,
-            role: entry.role,
-            shift: entry.shift,
+        if (data) {
+          data.forEach((entry) => {
+            teamIDs.push(entry.team_id);
           });
-        });
+          const uniqueTeamIDs = new Set(teamIDs);
 
-        setTeams(teamsObject);
+          const teamsObject = {};
+          for (let teamIDS of uniqueTeamIDs) {
+            teamsObject[teamIDS] = [];
+          }
+
+          data.forEach((entry) => {
+            teamsObject[entry.team_id].push({
+              name: entry.employee_name,
+              employee_id: entry.employee_id,
+              role: entry.role,
+              shift: entry.shift,
+            });
+          });
+          setTeams(teamsObject);
+        } else {
+          setTeams([]);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -103,13 +105,13 @@ const AllocationsContainer = () => {
   };
 
   const sendAllocations = () => {
-    // I would've made this dynamic so that it sends allocations to everyone however the free trial has a limit on 5 numbers it can be sent to, also theres a credit limit.
     const body = {
       employeeID: 1,
       name: "Tate Johnston",
       role: "Foreman",
       date: date,
       shift: "Dayshift",
+      //Input your phone number here in the same format provided
       number: "+61468589981",
     };
 
@@ -261,7 +263,13 @@ const AllocationsContainer = () => {
               />
             </Box>
             {Object.entries(teams).map(([team_id, employees]) => (
-              <AllocationTeamDisplay team_id={team_id} employees={employees} />
+              <AllocationTeamDisplay
+                key={team_id}
+                date={date}
+                fetchTeams={() => fetchTeams(date)}
+                team_id={team_id}
+                employees={employees}
+              />
             ))}
             {Object.entries(teams).length > 0 && (
               <>

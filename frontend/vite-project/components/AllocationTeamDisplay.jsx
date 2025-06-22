@@ -1,8 +1,24 @@
 import { Box, Typography } from "@mui/material";
 import { Colors } from "../src/assets/Colors";
 import Buttons from "./Buttons";
+import { useState } from "react";
+import DialogueBox from "./DialogueBox";
+import axios from "axios";
 
-const AllocationTeamsDisplay = ({ team_id, employees }) => {
+const AllocationTeamDisplay = ({ team_id, employees, fetchTeams, date }) => {
+  const [openDialogue, setOpendialogue] = useState(false);
+
+  const removeTeam = (team_id) => {
+    axios
+      .delete(`http://localhost:8081/lass/teams/deleteTeam/${team_id}`)
+      .then((data) => {
+        fetchTeams();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <Box
@@ -17,6 +33,34 @@ const AllocationTeamsDisplay = ({ team_id, employees }) => {
           padding: "20px",
         }}
       >
+        <div
+          style={{
+            height: "20px",
+            width: "20px",
+            backgroundColor: Colors.error,
+            fontWeight: "bold",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            color: "black",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}
+          onClick={() => setOpendialogue(true)}
+        >
+          X
+        </div>
+        <DialogueBox
+          open={openDialogue}
+          onClose={() => setOpendialogue(false)}
+          confirmClick={() => {
+            removeTeam(team_id);
+            setOpendialogue(false);
+          }}
+          dialogueTitle={`Remove Team ${team_id}?`}
+          cancelText={"Cancel"}
+          submitText={"Confirm"}
+        />
         <Box
           sx={{
             display: "flex",
@@ -51,6 +95,7 @@ const AllocationTeamsDisplay = ({ team_id, employees }) => {
         ) : (
           employees.map((employee) => (
             <Box
+              key={employee.employee_id}
               sx={{
                 display: "flex",
                 flexDirection: "row",
@@ -88,4 +133,4 @@ const AllocationTeamsDisplay = ({ team_id, employees }) => {
   );
 };
 
-export default AllocationTeamsDisplay;
+export default AllocationTeamDisplay;

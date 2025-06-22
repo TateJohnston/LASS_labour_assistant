@@ -106,17 +106,23 @@ const LeaveRequestDetailsContainer = ({
               width={"100%"}
             />
 
-            <Buttons
-              onClick={onClickApprove}
-              content={"Approve"}
-              backgroundColor={Colors.success}
-            />
+            {status !== "Approved" && (
+              <>
+                <Buttons
+                  onClick={onClickApprove}
+                  content={"Approve"}
+                  backgroundColor={Colors.success}
+                />
 
-            <Buttons
-              onClick={onClickDeny}
-              content={"Deny"}
-              backgroundColor={Colors.error}
-            />
+                {status !== "Denied" && (
+                  <Buttons
+                    onClick={onClickDeny}
+                    content={"Deny"}
+                    backgroundColor={Colors.error}
+                  />
+                )}
+              </>
+            )}
           </div>
           <Typography
             variant="h4"

@@ -17,7 +17,6 @@ const LoginForm = ({ forgotPasswordClick }) => {
   const [password, setPassword] = useState("");
 
   const logIn = (email, password) => {
-    console.log(email, password);
     const logInDetails = {
       email: email,
       password: password,
@@ -26,7 +25,6 @@ const LoginForm = ({ forgotPasswordClick }) => {
       .post(`http://localhost:8081/lass/logIn/`, logInDetails)
       .then((res) => {
         const data = res.data.data;
-        console.log(data);
         if (res.data.result === 200) {
           if (data.role_id > 5) {
             setIsAdmin(true);

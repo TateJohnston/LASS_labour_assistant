@@ -18,4 +18,8 @@ router.put("/updatebonus", (req, res) => {
   teamsController.updateBonus(req, res);
 });
 
+router.delete("/deleteTeam/:teamID", (req, res) => {
+  teamsController.deleteTeam(req, res);
+});
+
 module.exports = router;
