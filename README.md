@@ -13,17 +13,18 @@ Create a split terminal, in one cd to backend, in the other cd to frontend/vite-
 
 #### STEP TWO - DB setup
 
-Go to mySQL workbench and created a new database. Make sure to keep track of the database user, password, and port.
-Create a .env file in the backend folder, and setup with this structure.
-DB_NAME=<your database name>
-DB_USER=<your database user>
-DB_PASSWORD=<your database password>
-DB_HOST=<your database host>
-DB_PORT=<your database port>
-PORT=8081
-TWILIO_ACCOUNT_SID=<twilio account sid>
-TWILIO_AUTH_TOKEN=<twilio auth token>.
-Once done, in the backend terminal, npm start
+Go to mySQL workbench and created a new database.<br>
+Make sure to keep track of the database user, password, and port.<br>
+Create a .env file in the backend folder, and setup with this structure.<br>
+DB_NAME=<your database name><br>
+DB_USER=<your database user><br>
+DB_PASSWORD=<your database password><br>
+DB_HOST=<your database host><br>
+DB_PORT=<your database port><br>
+PORT=8081<br>
+TWILIO_ACCOUNT_SID=<twilio account sid><br>
+TWILIO_AUTH_TOKEN=<twilio auth token>.<br>
+Once done, in the backend terminal, type 'npm start'<br>
 Once tables have been synced, copy the content from script_file in the root folder of the project into your workbench with your new database selected.
 
 #### STEP THREE - Open UI
@@ -34,18 +35,18 @@ In the vite-project terminal, npm start. Then open the link in the terminal - sh
 
 #### LOGIN PAGE
 
-For Employee login,
-email: jacob.taylor@terminals.com.au
+For Employee login,<br>
+email: jacob.taylor@terminals.com.au<br>
 password: test
 
-For Admin login,
-email: jack.white@terminals.com.au
+For Admin login,<br>
+email: jack.white@terminals.com.au<br>
 password: test
 
 To utilize the forgot password feature, go back into workbench and run this script. note your phone number must be wrapped in quotation marks.
 
-update employees
-set contact_number = <"your number in 04\* \_ \_ \_ \_ \_ \_ \_ format">
+update employees<br>
+set contact_number = <"your number in 04\* \_ \_ \_ \_ \_ \_ \_ format"><br>
 where employee_id = 1
 
 Then click forgot password, enter jacob.taylor@terminals.com.au as the email and follow the prompts.
