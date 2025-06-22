@@ -107,7 +107,7 @@ const AllocationsContainer = () => {
   const sendAllocations = () => {
     const body = {
       employeeID: 1,
-      name: "Tate Johnston",
+      name: "Jacob Taylor",
       role: "Foreman",
       date: date,
       shift: "Dayshift",
