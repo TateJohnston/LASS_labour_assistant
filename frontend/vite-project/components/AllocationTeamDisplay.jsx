@@ -95,6 +95,7 @@ const AllocationTeamDisplay = ({ team_id, employees, fetchTeams, date }) => {
         ) : (
           employees.map((employee) => (
             <Box
+              key={employee.employee_id}
               sx={{
                 display: "flex",
                 flexDirection: "row",

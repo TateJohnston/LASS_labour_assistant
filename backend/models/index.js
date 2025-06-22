@@ -14,6 +14,7 @@ const Roles = require("./roles");
 const LeaveRequests = require("./leave_requests");
 
 const init = async () => {
+  await Roles.sync();
   await Employees.sync();
   await LeaveBalances.sync();
   await Payslips.sync();
@@ -26,7 +27,6 @@ const init = async () => {
   await Shifts.sync();
   await Teams.sync();
   await Rosters.sync();
-  await Roles.sync();
   await LeaveRequests.sync();
 };
 

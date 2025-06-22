@@ -76,6 +76,8 @@ const EmployeePaySummary = ({
       tax: tax,
       net: net,
       super: super_,
+      pay_period_start_date: start_date,
+      pay_period_end_date: end_date,
       pay_day: payday,
       release: true,
     };
@@ -117,7 +119,6 @@ const EmployeePaySummary = ({
             }
           }
         });
-        console.log(upgrades);
         setUpgrades(upgrades.reduce((a, b) => a + b, 0));
         setRows(rowArr);
         setSalary(data[0].salary);

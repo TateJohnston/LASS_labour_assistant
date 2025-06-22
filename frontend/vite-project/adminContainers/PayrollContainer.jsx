@@ -68,7 +68,6 @@ const PayrollContainer = () => {
       )
       .then((res) => {
         const data = res.data.data;
-        console.log(data);
         const employeeIDs = data.map((payslip) => payslip.employee_id);
         setCompletedPayslips(employeeIDs);
       })

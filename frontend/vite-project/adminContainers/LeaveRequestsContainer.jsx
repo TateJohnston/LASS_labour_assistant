@@ -177,16 +177,22 @@ const LeaveRequestContainer = () => {
             onClickBack={() => {
               setShowLeaveRequestPage(false);
               setSelectedRequest({});
+              setDenyLeave(false);
+              setApprovedLeave(false);
               fetchRequests();
             }}
             displayHandle={approvedLeave || denyLeave ? "none" : "flex"}
             content={
-              approvedLeave ? "Leave Approved" : denyLeave ? "Leave Denied" : ""
+              approvedLeave || selectedRequest[0].status === "Approved"
+                ? "Leave Approved"
+                : denyLeave || selectedRequest[0].status === "Denied"
+                ? "Leave Denied"
+                : ""
             }
             responseColor={
-              approvedLeave
+              approvedLeave || selectedRequest[0].status === "Approved"
                 ? Colors.success
-                : denyLeave
+                : denyLeave || selectedRequest[0].status === "Denied"
                 ? Colors.error
                 : "black"
             }

@@ -105,13 +105,13 @@ const AllocationsContainer = () => {
   };
 
   const sendAllocations = () => {
-    // I would've made this dynamic so that it sends allocations to everyone however the free trial has a limit on 5 numbers it can be sent to, also theres a credit limit.
     const body = {
       employeeID: 1,
       name: "Tate Johnston",
       role: "Foreman",
       date: date,
       shift: "Dayshift",
+      //Input your phone number here in the same format provided
       number: "+61468589981",
     };
 
@@ -264,6 +264,7 @@ const AllocationsContainer = () => {
             </Box>
             {Object.entries(teams).map(([team_id, employees]) => (
               <AllocationTeamDisplay
+                key={team_id}
                 date={date}
                 fetchTeams={() => fetchTeams(date)}
                 team_id={team_id}
