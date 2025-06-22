@@ -24,17 +24,14 @@ Payslips.init(
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
-    overtime: {
-      type: DataTypes.DECIMAL(10, 2),
-      allowNull: false,
-    },
+
     bonus: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     upgrades: {
       type: DataTypes.DECIMAL(10, 2),
-      allowNull: true,
+      allowNull: false,
     },
     gross: {
       type: DataTypes.DECIMAL(10, 2),
@@ -52,9 +49,17 @@ Payslips.init(
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
+    pay_period_start_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+    pay_period_end_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
     pay_day: {
-      type: DataTypes.DATE,
-      allowNull: true,
+      type: DataTypes.DATEONLY,
+      allowNull: false,
     },
     release: {
       type: DataTypes.BOOLEAN,

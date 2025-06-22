@@ -1,15 +1,21 @@
 const { DataTypes, Model } = require("sequelize");
 let dbConnect = require("../dbConnect");
 const sequelizeInstance = dbConnect.Sequelize;
+const Teams = require("./teams");
 
 class Rosters extends Model {}
 
 Rosters.init(
   {
+    roster_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+      primaryKey: true,
+    },
     employee_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      primaryKey: true,
       references: {
         model: "employees",
         key: "employee_id",
@@ -44,9 +50,8 @@ Rosters.init(
       allowNull: false,
     },
     date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
-      unique: true,
     },
   },
   {
@@ -56,4 +61,12 @@ Rosters.init(
     freezeTableName: true,
   }
 );
+
+Rosters.belongsTo(Teams, {
+  foreignKey: {
+    name: "team_id",
+    allowNull: true,
+  },
+  onDelete: "SET NULL",
+});
 module.exports = Rosters;

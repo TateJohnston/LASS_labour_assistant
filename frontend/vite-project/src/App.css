@@ -1,0 +1,49 @@
+#root {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.MuiGrid-root.MuiGrid-container.css-8m6qq6-MuiGrid-root {
+  column-gap: 19px;
+}
+.MuiBackdrop-root {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+/* Optional: make sure the calendar itself still allows interaction */
+.custom-date-range .MuiPaper-root {
+  pointer-events: auto !important;
+  z-index: 10; /* lower z-index so it doesn't block other components */
+  position: relative !important;
+}

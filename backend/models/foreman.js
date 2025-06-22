@@ -24,16 +24,17 @@ Foreman.init(
         key: "role_id",
       },
     },
-    shift_count: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+
     last_voc: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
     ticket_expiry: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+    has_skill: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
   },

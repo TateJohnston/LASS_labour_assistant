@@ -24,12 +24,13 @@ Clerks.init(
         key: "role_id",
       },
     },
-    shift_count: {
-      type: DataTypes.INTEGER,
+
+    last_voc: {
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
-    last_voc: {
-      type: DataTypes.DATE,
+    has_skill: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
   },

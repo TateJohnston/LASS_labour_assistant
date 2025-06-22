@@ -25,7 +25,7 @@ Teams.init(
       allowNull: true,
     },
     work_date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
   },

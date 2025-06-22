@@ -11,9 +11,10 @@ const Shifts = require("./shifts");
 const Teams = require("./teams");
 const Rosters = require("./rosters");
 const Roles = require("./roles");
-const Managers = require("./managers");
+const LeaveRequests = require("./leave_requests");
 
 const init = async () => {
+  await Roles.sync();
   await Employees.sync();
   await LeaveBalances.sync();
   await Payslips.sync();
@@ -26,11 +27,8 @@ const init = async () => {
   await Shifts.sync();
   await Teams.sync();
   await Rosters.sync();
-  await Roles.sync();
-  await Managers.sync();
+  await LeaveRequests.sync();
 };
-
-init();
 
 module.exports = {
   Employees,
@@ -46,5 +44,6 @@ module.exports = {
   Teams,
   Rosters,
   Roles,
-  Managers,
+  LeaveRequests,
+  init,
 };

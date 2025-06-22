@@ -2,15 +2,16 @@ const { DataTypes, Model } = require("sequelize");
 let dbConnect = require("../dbConnect");
 const sequelizeInstance = dbConnect.Sequelize;
 
-class Managers extends Model {}
+class LeaveRequests extends Model {}
 
-Managers.init(
+LeaveRequests.init(
   {
-    manager_id: {
+    leave_request_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
+      unique: true,
     },
     employee_id: {
       type: DataTypes.INTEGER,
@@ -20,34 +21,32 @@ Managers.init(
         key: "employee_id",
       },
     },
-    role_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: "roles",
-        key: "role_id",
-      },
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    password: {
+    leave_type: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    number: {
+    status: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+    },
+    comment: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    start_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+    end_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
     },
   },
   {
     sequelize: sequelizeInstance,
-    modelName: "managers",
+    modelName: "leave_requests",
     timestamps: true,
     freezeTableName: true,
   }
 );
-module.exports = Managers;
+module.exports = LeaveRequests;
