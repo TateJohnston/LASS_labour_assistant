@@ -1,4 +1,4 @@
-# labour_assistant
+# LASS
 
 ## Labour Assistant For Complex Labour Requirements
 
