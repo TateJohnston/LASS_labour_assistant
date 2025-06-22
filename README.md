@@ -73,6 +73,10 @@ Head to the payroll tab, to utilise payroll, select a date range. Note that the 
 
 Head to the Leave Requests tab, not that accepting leave requests within the leave request tab, or revoking employee’s skills within the employees tab will alter their ability to be allocated. Accepting their leave request will remove them from the roster and won’t show up in the allocations tab. Revoking an employee’s skill will remove your ability to allocate them to a specific role.
 
+#### Logging Out
+
+To Log out of either the admin page or employee page, click on the avatar in the top right corner and select sign out.
+
 #### EMPLOYEE PAGE (logged in as jacob.taylor@terminals.com.au)
 
 The only functionality is submitting a leave request. Open the tab and follow the prompts.
